@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Dashboard Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <h1 class="h3 fw-bold text-white mb-0">Airport Operations &amp; Delay Dashboard</h1>
+                <span class="badge bg-emerald-950 text-emerald-400 border border-emerald-800 fs-8 font-mono">SYSTEM ACTIVE</span>
+            </div>
+            <p class="text-slate-400 mb-0 fs-6">Real-time arrival delay analytics &amp; machine learning inference for flight operations staff.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ url_for('predict_page') }}" class="btn btn-sky fw-semibold shadow-sm px-3 py-2 d-flex align-items-center gap-2">
+                <i class="bi bi-airplane-fill"></i> New Flight Prediction
+            </a>
+            <a href="{{ url_for('performance') }}" class="btn btn-navy-800 text-slate-200 border border-slate-700 px-3 py-2 d-flex align-items-center gap-2">
+                <i class="bi bi-graph-up"></i> Benchmark Metrics
+            </a>
+        </div>
+    </div>
+
+    <!-- KPI Metric Cards -->
+    <div class="row g-3 mb-4">
+        <!-- Total Flights -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card metric-card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-body p-3 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="text-slate-400 fs-7 fw-medium text-uppercase tracking-wider">Total Operations Records</span>
+                        <div class="metric-icon-badge bg-sky-950 text-sky-400 border border-sky-800">
+                            <i class="bi bi-collection-fill"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="metric-value font-mono fw-bold text-white fs-2">{{ "{:,}".format(stats.total_flights) }}</div>
+                        <div class="fs-8 text-slate-400 mt-1 d-flex align-items-center gap-1">
+                            <i class="bi bi-calendar3 text-slate-400"></i>
+                            <span>Period: {{ stats.date_min }} to {{ stats.date_max }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Predicted Delayed -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card metric-card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-body p-3 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="text-slate-400 fs-7 fw-medium text-uppercase tracking-wider">Delayed Flights (&ge;15m)</span>
+                        <div class="metric-icon-badge bg-rose-950 text-rose-400 border border-rose-800">
+                            <i class="bi bi-exclamation-octagon-fill"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="metric-value font-mono fw-bold text-rose-400 fs-2">{{ "{:,}".format(stats.delayed_flights) }}</div>
+                        <div class="fs-8 text-slate-400 mt-1 d-flex align-items-center gap-1">
+                            <span class="badge bg-rose-950 text-rose-300 border border-rose-800 font-mono">{{ stats.delay_rate }}%</span>
+                            <span>Historical delay incidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Predicted On Time -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card metric-card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-body p-3 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="text-slate-400 fs-7 fw-medium text-uppercase tracking-wider">On-Time Flights (&lt;15m)</span>
+                        <div class="metric-icon-badge bg-emerald-950 text-emerald-400 border border-emerald-800">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="metric-value font-mono fw-bold text-emerald-400 fs-2">{{ "{:,}".format(stats.on_time_flights) }}</div>
+                        <div class="fs-8 text-slate-400 mt-1 d-flex align-items-center gap-1">
+                            <span class="badge bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono">{{ stats.on_time_rate }}%</span>
+                            <span>Historical punctual rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Test Performance -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card metric-card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-body p-3 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="text-slate-400 fs-7 fw-medium text-uppercase tracking-wider">Gradient Boosting PR-AUC</span>
+                        <div class="metric-icon-badge bg-purple-950 text-purple-400 border border-purple-800">
+                            <i class="bi bi-cpu-fill"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="metric-value font-mono fw-bold text-purple-300 fs-2">0.823</div>
+                        <div class="fs-8 text-slate-400 mt-1 d-flex align-items-center gap-1">
+                            <span class="badge bg-purple-950 text-purple-300 border border-purple-800 font-mono">ROC: 0.914</span>
+                            <span>Threshold: 0.672</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizations Grid -->
+    <div class="row g-3 mb-4">
+        <!-- Distribution Donut & Hourly Bar Chart -->
+        <div class="col-12 col-lg-4">
+            <div class="card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-header bg-navy-950 border-bottom border-slate-800 py-3 d-flex justify-content-between align-items-center">
+                    <h2 class="h6 fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-pie-chart-fill text-sky-400"></i> Arrival Outcome Split
+                    </h2>
+                    <span class="badge bg-slate-800 text-slate-400 border border-slate-700 font-mono fs-8">2023 BTS</span>
+                </div>
+                <div class="card-body p-3 d-flex flex-column align-items-center justify-content-center">
+                    <div style="height: 220px; width: 100%; position: relative;">
+                        <canvas id="outcomeDoughnutChart"></canvas>
+                    </div>
+                    <div class="d-flex justify-content-center gap-4 mt-3 w-100 pt-2 border-top border-slate-800 fs-7">
+                        <div class="text-center">
+                            <span class="d-inline-block rounded-circle bg-emerald-500 me-1" style="width: 10px; height: 10px;"></span>
+                            <span class="text-slate-300">On Time: <strong>{{ stats.on_time_rate }}%</strong></span>
+                        </div>
+                        <div class="text-center">
+                            <span class="d-inline-block rounded-circle bg-rose-500 me-1" style="width: 10px; height: 10px;"></span>
+                            <span class="text-slate-300">Delayed: <strong>{{ stats.delay_rate }}%</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hourly Delay Rates Chart -->
+        <div class="col-12 col-lg-8">
+            <div class="card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-header bg-navy-950 border-bottom border-slate-800 py-3 d-flex justify-content-between align-items-center">
+                    <h2 class="h6 fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-clock-history text-sky-400"></i> Delay Incidence by Scheduled Departure Hour
+                    </h2>
+                    <span class="text-slate-400 fs-8 font-mono">24h Diurnal Pattern</span>
+                </div>
+                <div class="card-body p-3">
+                    <div style="height: 250px; width: 100%;">
+                        <canvas id="hourlyDelayChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Row: Top Hubs & Quick Test Launchers -->
+    <div class="row g-3 mb-4">
+        <!-- Hub Performance Bar Chart -->
+        <div class="col-12 col-lg-6">
+            <div class="card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-header bg-navy-950 border-bottom border-slate-800 py-3 d-flex justify-content-between align-items-center">
+                    <h2 class="h6 fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-building text-sky-400"></i> Origin Airport Hub Delay Rates
+                    </h2>
+                    <span class="badge bg-slate-800 text-slate-400 border border-slate-700 fs-8">10 Key Hubs</span>
+                </div>
+                <div class="card-body p-3">
+                    <div style="height: 240px; width: 100%;">
+                        <canvas id="hubDelayChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Test Launcher & Decision Support Overview -->
+        <div class="col-12 col-lg-6">
+            <div class="card bg-navy-900 border-slate-800 rounded-3 shadow-sm h-100">
+                <div class="card-header bg-navy-950 border-bottom border-slate-800 py-3 d-flex justify-content-between align-items-center">
+                    <h2 class="h6 fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-lightning-charge-fill text-amber-400"></i> Fast Flight Verification Test
+                    </h2>
+                    <span class="text-slate-400 fs-8">Quick Evaluator Shortcuts</span>
+                </div>
+                <div class="card-body p-3">
+                    <p class="text-slate-300 fs-7 mb-3">
+                        Airport staff can test immediate arrival predictions across different operating conditions:
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('predict_page') }}?test=1" class="sample-test-pill p-2 rounded-2 bg-navy-950 border border-slate-800 text-decoration-none d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-sky-950 text-sky-300 border border-sky-800 font-mono me-2">WN 26</span>
+                                <span class="text-slate-200 fw-medium">LAX &rarr; DEN (On-Time Dep, -2m)</span>
+                            </div>
+                            <span class="badge bg-emerald-950 text-emerald-400 border border-emerald-800">Test On-Time</span>
+                        </a>
+                        <a href="{{ url_for('predict_page') }}?test=2" class="sample-test-pill p-2 rounded-2 bg-navy-950 border border-slate-800 text-decoration-none d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-sky-950 text-sky-300 border border-sky-800 font-mono me-2">AA 1562</span>
+                                <span class="text-slate-200 fw-medium">PHX &rarr; ATL (+17m Departure Delay)</span>
+                            </div>
+                            <span class="badge bg-rose-950 text-rose-400 border border-rose-800">Test Delay</span>
+                        </a>
+                        <a href="{{ url_for('predict_page') }}?test=3" class="sample-test-pill p-2 rounded-2 bg-navy-950 border border-slate-800 text-decoration-none d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-sky-950 text-sky-300 border border-sky-800 font-mono me-2">DL 896</span>
+                                <span class="text-slate-200 fw-medium">SEA &rarr; ATL (Turnaround Cascade)</span>
+                            </div>
+                            <span class="badge bg-amber-950 text-amber-400 border border-amber-800">Test Rotation</span>
+                        </a>
+                    </div>
+                    <div class="alert alert-info bg-sky-950 border-sky-800 text-sky-200 p-2 mt-3 mb-0 rounded-2 fs-8 d-flex align-items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-sky-400 fs-6"></i>
+                        <span>Predictions use <strong>actual departure delay</strong>, origin METAR weather, and aircraft tail rotation.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Session Prediction History -->
+    <div class="card bg-navy-900 border-slate-800 rounded-3 shadow-sm mb-4">
+        <div class="card-header bg-navy-950 border-bottom border-slate-800 py-3 d-flex justify-content-between align-items-center">
+            <h2 class="h6 fw-bold text-white mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-clock-history text-sky-400"></i> Recent Session Prediction Activity
+            </h2>
+            <span class="badge bg-slate-800 text-slate-400 border border-slate-700 font-mono fs-8" id="historyCounter">
+                {{ recent_history|length }} logged
+            </span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover table-borderless align-middle mb-0 fs-7" id="recentHistoryTable">
+                    <thead class="bg-navy-950 text-slate-400 border-bottom border-slate-800 font-mono">
+                        <tr>
+                            <th class="ps-3 py-2">TIME</th>
+                            <th class="py-2">FLIGHT</th>
+                            <th class="py-2">AIRLINE</th>
+                            <th class="py-2">ROUTE</th>
+                            <th class="py-2">DEP DELAY</th>
+                            <th class="py-2">PREDICTED DELAY PROBABILITY</th>
+                            <th class="py-2">STATUS</th>
+                            <th class="pe-3 py-2 text-end">MODEL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        {% if recent_history %}
+                            {% for item in recent_history %}
+                            <tr class="border-bottom border-slate-800">
+                                <td class="ps-3 font-mono text-slate-400">{{ item.timestamp }}</td>
+                                <td class="font-mono fw-bold text-white">#{{ item.flight_number }}</td>
+                                <td>{{ item.airline_name }} ({{ item.airline }})</td>
+                                <td class="font-mono text-slate-300">{{ item.route }}</td>
+                                <td>
+                                    <span class="badge {{ 'bg-rose-950 text-rose-300 border border-rose-800' if item.dep_delay_min >= 15 else 'bg-slate-800 text-slate-300' }} font-mono">
+                                        {{ '+' if item.dep_delay_min > 0 else '' }}{{ item.dep_delay_min }}m
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2" style="max-width: 140px;">
+                                        <div class="progress flex-grow-1 bg-navy-950 border border-slate-800" style="height: 6px;">
+                                            <div class="progress-bar {{ 'bg-rose-500' if item.is_delayed else 'bg-emerald-500' }}" style="width: {{ item.probability_percent }}%;"></div>
+                                        </div>
+                                        <span class="font-mono fs-8 text-slate-300">{{ item.probability_percent }}%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge {{ 'bg-rose-950 text-rose-400 border border-rose-800' if item.is_delayed else 'bg-emerald-950 text-emerald-400 border border-emerald-800' }}">
+                                        {{ item.prediction }}
+                                    </span>
+                                </td>
+                                <td class="pe-3 text-end font-mono fs-8 text-slate-400">{{ item.model_name }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr id="emptyHistoryRow">
+                                <td colspan="8" class="text-center py-4 text-slate-400">
+                                    <i class="bi bi-inbox fs-3 d-block mb-1 text-slate-400"></i>
+                                    <span>No predictions executed in this session yet.</span><br>
+                                    <a href="{{ url_for('predict_page') }}" class="btn btn-sm btn-outline-sky mt-2">Check a Flight Now</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Embedded Dashboard Initial Data for Chart.js -->
+<script>
+    window.DASHBOARD_DATA = {
+        on_time_rate: {{ stats.on_time_rate }},
+        delay_rate: {{ stats.delay_rate }},
+        hourly_delays: {{ stats.hourly_delays|tojson }},
+        hub_stats: {{ stats.hub_stats|tojson }}
+    };
+</script>
+{% endblock %}

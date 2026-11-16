@@ -1,0 +1,785 @@
+/* ==========================================================================
+   AeroDelay Ops - Editorial Minimalist Aviation Intelligence Stylesheet
+   Design Philosophy: Warm Ivory Canvas • Editorial Serif Typography • Clean Light Controls
+   Inspired by modern editorial typography, executive clarity & quiet minimalism.
+   ========================================================================== */
+
+:root {
+    /* Warm Ivory & Natural Stone Palette (100% Non-Radiant) */
+    --bg-canvas: #faf9f5;          /* Warm clean ivory off-white canvas */
+    --surface-card: #ffffff;       /* Pure crisp white card surface */
+    --surface-subtle: #f8fafc;     /* Soft secondary surface (tiles, trays) */
+    --surface-tray: #f4f4f5;       /* Segmented control tray */
+    
+    --border-card: #e5e7eb;        /* Subtle hairline card border */
+    --border-subtle: #f1f5f9;      /* Inner tile borders */
+    --border-divider: #e4e4e7;     /* Hairline section dividers */
+
+    /* Typography Colors */
+    --text-charcoal: #18181b;      /* Deep soft charcoal for primary headings */
+    --text-body: #3f3f46;          /* Legible dark stone for body text */
+    --text-muted: #71717a;         /* Muted stone gray for metadata & labels */
+    --text-dim: #a1a1aa;           /* Subtle helper text */
+
+    /* Warm Honey / Amber Accent (Matching Template) */
+    --amber-primary: #f59e0b;      /* Warm golden amber for CTA pill button */
+    --amber-hover: #d97706;        /* Deeper amber for hover */
+    --amber-text: #92400e;         /* Warm amber text */
+    --amber-surface: #fffbeb;      /* Gentle honey tint */
+    --amber-border: #fde68a;       /* Soft amber border */
+
+    /* Calm Semantic Accents */
+    --mint-surface: #f0fdf4;
+    --mint-border: #bbf7d0;
+    --mint-text: #166534;
+
+    --rose-surface: #fef2f2;
+    --rose-border: #fecaca;
+    --rose-text: #991b1b;
+
+    /* Fonts */
+    --font-serif: 'Newsreader', 'Lora', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    /* Bootstrap Overrides */
+    --bs-body-bg: var(--bg-canvas);
+    --bs-body-color: var(--text-body);
+    --bs-card-bg: var(--surface-card);
+    --bs-card-color: var(--text-body);
+    --bs-card-border-color: var(--border-card);
+    --bs-border-color: var(--border-card);
+}
+
+/* ==========================================================================
+   1. Typography & Global Layout
+   ========================================================================== */
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-canvas);
+    color: var(--text-body);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+}
+
+.font-serif {
+    font-family: var(--font-serif);
+}
+
+.font-serif-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+.text-charcoal {
+    color: var(--text-charcoal) !important;
+}
+
+.bg-cream {
+    background-color: var(--bg-canvas) !important;
+}
+
+/* Editorial Highlight Text (Underline & Honey Tint, like template) */
+.text-amber-highlight {
+    color: var(--amber-hover);
+    text-decoration: underline;
+    text-decoration-color: #fcd34d;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+}
+
+.text-amber-accent {
+    color: var(--amber-hover);
+}
+
+/* ==========================================================================
+   2. Navigation Header & Brand
+   ========================================================================== */
+.brand-emblem {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-charcoal);
+    letter-spacing: -0.01em;
+}
+
+.navbar .nav-link {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.navbar .nav-link:hover {
+    color: var(--text-charcoal);
+}
+
+.navbar .nav-link.active {
+    color: var(--text-charcoal) !important;
+    font-weight: 600;
+    background-color: #f4f4f5;
+}
+
+.status-dot-amber {
+    width: 7px;
+    height: 7px;
+    background-color: var(--amber-primary);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   3. Buttons & CTAs (Pill-Shaped, Exactly Like Template)
+   ========================================================================== */
+.btn-amber-pill {
+    background-color: var(--amber-primary) !important;
+    color: #1c1917 !important;
+    border-radius: 9999px !important;
+    border: none !important;
+    font-weight: 600;
+    padding: 0.65rem 1.6rem;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-amber-pill:hover {
+    background-color: var(--amber-hover) !important;
+    color: #ffffff !important;
+}
+
+.btn-stone-pill {
+    background-color: #ffffff !important;
+    color: #3f3f46 !important;
+    border: 1px solid var(--border-divider) !important;
+    border-radius: 9999px !important;
+    font-weight: 500;
+    padding: 0.55rem 1.4rem;
+    transition: all 0.15s ease;
+}
+
+.btn-stone-pill:hover {
+    background-color: #f4f4f5 !important;
+    color: var(--text-charcoal) !important;
+    border-color: #d4d4d8 !important;
+}
+
+/* One-Click Scenario Preset Chips */
+.sample-chip {
+    background: #ffffff !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: 9999px !important;
+    color: #3f3f46 !important;
+    font-size: 0.8125rem;
+    padding: 0.4rem 0.9rem !important;
+    transition: all 0.15s ease !important;
+}
+
+.sample-chip:hover {
+    background: #fafaf9 !important;
+    border-color: #a1a1aa !important;
+    color: var(--text-charcoal) !important;
+}
+
+.sample-chip-badge {
+    padding: 2px 7px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.6875rem;
+    background: #f4f4f5;
+    color: #52525b;
+    border: 1px solid #e4e4e7;
+}
+
+.sample-chip-badge.badge-success { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.sample-chip-badge.badge-warning { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+.sample-chip-badge.badge-danger { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+.sample-chip-badge.badge-primary { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+.sample-chip-badge.badge-info { background: #f0fdfa; color: #115e59; border-color: #99f6e4; }
+
+/* ==========================================================================
+   4. Segmented Control Switchers (Clean Pill Trays with Distinct Backgrounds)
+   ========================================================================== */
+.segmented-control {
+    display: inline-flex;
+    align-items: center;
+    background: var(--surface-tray);
+    border: 1px solid var(--border-divider);
+    border-radius: 9999px;
+    padding: 4px;
+    gap: 4px;
+    user-select: none;
+}
+
+.segmented-check {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.segmented-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.segmented-btn:hover {
+    color: var(--text-charcoal);
+}
+
+/* Status Indicator Pip */
+.seg-pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.seg-pip-arrival { background-color: #3b82f6; }
+.seg-pip-departure { background-color: #d97706; }
+.seg-pip-gb { background-color: #10b981; }
+.seg-pip-lr { background-color: #71717a; }
+
+.seg-pill-tag {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    color: #71717a;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 1px 6px;
+    border-radius: 9999px;
+}
+
+.seg-mini-badge {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono);
+    padding: 1px 6px;
+    border-radius: 9999px;
+}
+
+/* 1. Target: Arrival Delay Checked -> Crisp White Pill */
+#targetArrival:checked + .segmented-btn,
+.segmented-check:checked + .seg-target-arrival {
+    background: #ffffff !important;
+    color: var(--text-charcoal) !important;
+    font-weight: 600;
+    border-color: #d4d4d8 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+#targetArrival:checked + .segmented-btn .seg-pill-tag,
+.segmented-check:checked + .seg-target-arrival .seg-pill-tag {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+}
+
+/* 2. Target: Departure Delay Checked -> Warm Honey-Parchment Pill (Distinct from Arrival) */
+#targetDeparture:checked + .segmented-btn,
+.segmented-check:checked + .seg-target-departure {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+    font-weight: 600;
+    border-color: #fde68a !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+#targetDeparture:checked + .segmented-btn .seg-pill-tag,
+.segmented-check:checked + .seg-target-departure .seg-pill-tag {
+    background: #fef9c3 !important;
+    color: #854d0e !important;
+}
+
+/* 3. Model: Gradient Boosting Checked -> Pale Sage Pill */
+#modelHGB:checked + .segmented-btn,
+.segmented-check:checked + .seg-model-gb {
+    background: #f0fdf4 !important;
+    color: #166534 !important;
+    font-weight: 600;
+    border-color: #bbf7d0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* 4. Model: Logistic Regression Checked -> Quiet Stone Pill */
+#modelLR:checked + .segmented-btn,
+.segmented-check:checked + .seg-model-lr {
+    background: #fafaf9 !important;
+    color: #44403c !important;
+    font-weight: 600;
+    border-color: #e7e5e4 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* ==========================================================================
+   5. Form Controls & Inputs (Clean Light Theme)
+   ========================================================================== */
+.form-label {
+    color: #4b5563;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.form-control, .form-select {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: var(--text-charcoal) !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem;
+    padding: 0.55rem 0.75rem;
+    box-shadow: none !important;
+    transition: border-color 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--amber-primary) !important;
+    outline: none !important;
+}
+
+.input-group-text {
+    background-color: #f9fafb !important;
+    border: 1px solid #d1d5db !important;
+    color: #6b7280 !important;
+    border-radius: 8px 0 0 8px !important;
+}
+
+/* ==========================================================================
+   6. Route Visualizer & Telemetry Cards
+   ========================================================================== */
+.route-visualizer-box {
+    background: #f9fafb;
+    border: 1px solid var(--border-card);
+    border-radius: 10px;
+    padding: 1.25rem;
+}
+
+.route-flight-line {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    border-top: 1px dashed #cbd5e1;
+    z-index: 1;
+}
+
+.route-plane-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    padding: 4px 8px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    z-index: 2;
+}
+
+/* Status Cards & Alerts */
+.prediction-status-card {
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.status-on-time, .status-low-risk {
+    background: var(--mint-surface) !important;
+    border-color: var(--mint-border) !important;
+    color: var(--mint-text) !important;
+}
+
+.status-delayed, .status-high-risk {
+    background: var(--rose-surface) !important;
+    border-color: var(--rose-border) !important;
+    color: var(--rose-text) !important;
+}
+
+/* Threshold Marker Pin */
+.threshold-marker-pin {
+    position: absolute;
+    top: -6px;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.threshold-line {
+    width: 2px;
+    height: 24px;
+    background-color: #18181b;
+    margin: 0 auto;
+}
+
+.threshold-label {
+    font-size: 0.65rem;
+    color: #4b5563;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Radar Scan Placeholder (Clean Minimalist Animation) */
+.radar-scan-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radar-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #f1f5f9;
+}
+
+.radar-plane {
+    font-size: 1.5rem;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   7. Dark-to-Light Compatibility Mappings
+   (Ensures dynamic scripts & existing classes render naturally in light mode)
+   ========================================================================== */
+.bg-navy-950, .bg-navy-900, .bg-navy-800 {
+    background-color: #ffffff !important;
+}
+
+.border-slate-800, .border-slate-700 {
+    border-color: #e5e7eb !important;
+}
+
+.text-white {
+    color: #18181b !important;
+}
+
+.text-slate-100, .text-slate-200 {
+    color: #18181b !important;
+}
+
+.text-slate-300, .text-slate-400 {
+    color: #4b5563 !important;
+}
+
+.text-sky-400, .text-sky-300, .text-primary {
+    color: #2563eb !important;
+}
+
+.bg-sky-950 {
+    background-color: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    color: #1d4ed8 !important;
+}
+
+.bg-emerald-950 {
+    background-color: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+    color: #166534 !important;
+}
+
+.bg-rose-950 {
+    background-color: #fef2f2 !important;
+    border-color: #fecaca !important;
+    color: #991b1b !important;
+}
+
+.bg-amber-950, .bg-amber-900 {
+    background-color: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #92400e !important;
+}
+
+.bg-purple-950, .bg-purple-900 {
+    background-color: #faf5ff !important;
+    border-color: #e9d5ff !important;
+    color: #6b21a8 !important;
+}
+
+.btn-sky {
+    background-color: var(--amber-primary) !important;
+    color: #1c1917 !important;
+    border-radius: 9999px !important;
+    border: none !important;
+    font-weight: 600;
+}
+
+.btn-sky:hover {
+    background-color: var(--amber-hover) !important;
+    color: #ffffff !important;
+}
+
+.btn-navy-800 {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+    border-radius: 9999px !important;
+}
+
+.btn-navy-800:hover {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+.card {
+    background-color: #ffffff !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+.shadow-xs {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.btn-outline-sky {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+    border-radius: 9999px !important;
+    font-size: 0.825rem;
+}
+
+.btn-outline-sky:hover {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+.btn-outline-sky.active {
+    background-color: var(--amber-primary) !important;
+    border-color: var(--amber-hover) !important;
+    color: #1c1917 !important;
+    font-weight: 600;
+}
+
+.fs-8 { font-size: 0.75rem; }
+.fs-7 { font-size: 0.8125rem; }
+
+/* ==========================================================================
+   8. Complete Tailwind Stone & Amber Palette Definitions
+   (Fixes all badge, card, and text visibility across the website)
+   ========================================================================== */
+.text-stone-900 { color: #18181b !important; }
+.text-stone-800 { color: #27272a !important; }
+.text-stone-700 { color: #3f3f46 !important; }
+.text-stone-600 { color: #52525b !important; }
+.text-stone-500 { color: #71717a !important; }
+.text-stone-400 { color: #a1a1aa !important; }
+.text-stone-300 { color: #d4d4d8 !important; }
+
+.bg-stone-50 { background-color: #fafaf9 !important; }
+.bg-stone-100 { background-color: #f5f5f4 !important; }
+.bg-stone-200 { background-color: #e7e5e4 !important; }
+
+.border-stone-100 { border-color: #f5f5f4 !important; }
+.border-stone-200 { border-color: #e7e5e4 !important; }
+.border-stone-300 { border-color: #d6d3d1 !important; }
+.border-stone-400 { border-color: #a8a29e !important; }
+
+.text-amber-900 { color: #78350f !important; }
+.text-amber-800 { color: #92400e !important; }
+.text-amber-700 { color: #b45309 !important; }
+.text-amber-600 { color: #d97706 !important; }
+
+.bg-amber-50 { background-color: #fffbeb !important; }
+.bg-amber-100 { background-color: #fef3c7 !important; }
+.bg-amber-200 { background-color: #fde68a !important; }
+
+.border-amber-200 { border-color: #fde68a !important; }
+.border-amber-300 { border-color: #fcd34d !important; }
+.border-amber-400 { border-color: #fbbf24 !important; }
+
+/* Global Badge Visibility Fix (Overrides Bootstrap's default white color) */
+.badge {
+    color: #1c1917 !important;
+    font-weight: 500;
+}
+
+.badge.bg-stone-100 {
+    background-color: #f5f5f4 !important;
+    color: #27272a !important;
+    border: 1px solid #e7e5e4 !important;
+}
+
+.badge.bg-stone-200 {
+    background-color: #e7e5e4 !important;
+    color: #18181b !important;
+}
+
+.badge.bg-amber-50 {
+    background-color: #fffbeb !important;
+    color: #92400e !important;
+    border: 1px solid #fde68a !important;
+}
+
+.badge.bg-amber-100 {
+    background-color: #fef3c7 !important;
+    color: #78350f !important;
+    border: 1px solid #fcd34d !important;
+}
+
+.badge.bg-amber-200 {
+    background-color: #fde68a !important;
+    color: #78350f !important;
+    border: 1px solid #fbbf24 !important;
+}
+
+/* Report Section Navigation Anchor Pills */
+a.badge {
+    display: inline-block;
+    color: #27272a !important;
+    transition: all 0.15s ease-in-out;
+}
+
+a.badge:hover {
+    background-color: #e7e5e4 !important;
+    color: #09090b !important;
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Benchmark Selector Buttons Active State */
+.btn-outline-dark.active {
+    background-color: var(--amber-primary) !important;
+    border-color: var(--amber-hover) !important;
+    color: #1c1917 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+
+/* Explicit Report Navigation & Rubric Pills */
+.report-nav-pill {
+    display: inline-block !important;
+    background-color: #f5f5f4 !important;
+    color: #18181b !important;
+    border: 1px solid #d6d3d1 !important;
+    border-radius: 6px !important;
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+.report-nav-pill:hover {
+    background-color: #e7e5e4 !important;
+    color: #000000 !important;
+    border-color: #a8a29e !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.rubric-pill {
+    display: inline-block !important;
+    background-color: #fef3c7 !important;
+    color: #78350f !important;
+    border: 1px solid #fcd34d !important;
+    border-radius: 9999px !important;
+    padding: 0.25rem 0.7rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+}
+
+
+/* Interactive Decision Threshold Simulator & Confusion Matrix Enhancements */
+.btn-stone-pill.active {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+    border-color: #f59e0b !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 2px rgba(180, 83, 9, 0.12) !important;
+}
+
+#thresholdSlider {
+    cursor: pointer;
+    accent-color: #b45309;
+}
+
+#thresholdSlider::-webkit-slider-thumb {
+    background-color: #b45309 !important;
+    border: 2px solid #78350f !important;
+    box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.25) !important;
+    cursor: grab;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+#thresholdSlider::-moz-range-thumb {
+    background-color: #b45309 !important;
+    border: 2px solid #78350f !important;
+    box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.25) !important;
+    cursor: grab;
+}
+
+#thresholdSlider:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.2);
+    box-shadow: 0 0 0 4px rgba(180, 83, 9, 0.35) !important;
+}
+
+#thresholdSlider:active::-moz-range-thumb {
+    cursor: grabbing;
+    transform: scale(1.2);
+}
+
+.fs-9 {
+    font-size: 0.72rem;
+}
+
+.cm-cell {
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cm-number {
+    transition: color 0.2s ease, transform 0.15s ease;
+    display: inline-block;
+}
+
+.cm-pulse {
+    animation: cmHighlight 0.35s ease-out;
+}
+
+@keyframes cmHighlight {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+.ablation-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.ablation-btn:hover {
+    border-color: #cbd5e1 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.ablation-btn.active {
+    border-color: #f59e0b !important;
+    background-color: #fffbeb !important;
+    box-shadow: 0 0 0 1px #f59e0b inset, 0 4px 8px -2px rgba(180, 83, 9, 0.1) !important;
+}
+
+#prCurveChart {
+    cursor: crosshair;
+}

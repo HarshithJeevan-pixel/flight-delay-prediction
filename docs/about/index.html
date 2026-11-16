@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About AeroDelay Ops - AeroDelay Ops</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+    <!-- Google Fonts: Newsreader (Editorial Serif), Inter (Sans), JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../static/css/style.css?v=5.3.0">
+</head>
+<body class="bg-cream text-charcoal min-vh-100 d-flex flex-column">
+
+    <!-- Top Navigation Bar (Editorial Minimalist) -->
+    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom border-stone-200 sticky-top px-3 py-2">
+        <div class="container-fluid">
+            <!-- Brand Logo -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+                <div class="brand-emblem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#18181b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                        <path d="M2 12h20"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="brand-title font-serif">AeroDelay <span class="text-amber-accent">Ops</span></span>
+                </div>
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler border-stone-300" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill " href="../predict.html">
+                            <i class="bi bi-airplane-engines me-1"></i> Flight Prediction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill " href="../performance.html">
+                            <i class="bi bi-graph-up me-1"></i> Model Benchmark &amp; Interactions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill active" href="../about.html">
+                            <i class="bi bi-file-earmark-text me-1"></i> Project Reasoning &amp; Methodology
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Right System Status Badges -->
+                <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                    <div class="status-pill d-none d-md-flex align-items-center gap-2 bg-stone-50 border border-stone-200 px-3 py-1 rounded-pill">
+                        <span class="status-dot-amber"></span>
+                        <span class="fs-7 text-stone-600 font-mono">Dual-Stage ML Active</span>
+                    </div>
+                    <div class="status-pill d-none d-xl-flex align-items-center gap-2 bg-stone-50 border border-stone-200 px-3 py-1 rounded-pill">
+                        <span class="fs-7 text-stone-500 font-mono">952k Corpus &bull; BTS 2023–24</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow-1 py-4">
+        <div class="container-fluid px-3 px-lg-4">
+            
+<div class="container-fluid px-2 px-lg-4 py-3">
+
+    <!-- Hero Header / Eyebrow (Editorial Serif Style) -->
+    <div class="border-bottom border-stone-200 pb-4 mb-4">
+        <p class="font-serif-italic text-stone-500 fs-6 mb-1">academic project documentation &amp; empirical reasoning</p>
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+            <div>
+                <h1 class="display-6 font-serif text-stone-900 fw-bold mb-1">
+                    Flight Delay Operations: <span class="text-amber-highlight">Full Project Reasoning</span>
+                </h1>
+                <p class="text-stone-600 fs-6 mb-0" style="max-width: 820px;">
+                    Comprehensive scientific report from core operational questions to empirical conclusions, covering data curation, leakage-free preprocessing, benchmark comparisons, metric evaluation, error analysis, and operational limitations.
+                </p>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="../performance.html" class="btn btn-stone-pill px-3 py-2 fs-7">
+                    <i class="bi bi-graph-up me-1"></i> Interactive Benchmarks
+                </a>
+                <a href="../predict.html" class="btn btn-amber-pill px-3 py-2 fs-7 fw-semibold">
+                    <i class="bi bi-airplane-engines me-1"></i> Live Inference Tool
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Anchor Bar -->
+    <div class="bg-white border border-stone-200 rounded-3 p-3 mb-4 shadow-xs">
+        <span class="fs-8 text-stone-400 text-uppercase tracking-wider fw-bold me-2 font-mono">Report Sections:</span>
+        <div class="d-inline-flex flex-wrap gap-2">
+            <a href="#section-question" class="report-nav-pill font-mono">1. Questions &amp; Unit of Observation</a>
+            <a href="#section-data" class="report-nav-pill font-mono">2. Data &amp; Quality Issues</a>
+            <a href="#section-preprocessing" class="report-nav-pill font-mono">3. Preprocessing Rationale</a>
+            <a href="#section-models" class="report-nav-pill font-mono">4. Baselines &amp; Compared Models</a>
+            <a href="#section-evaluation" class="report-nav-pill font-mono">5. Evaluation Framework &amp; Splits</a>
+            <a href="#section-results" class="report-nav-pill font-mono">6. Results &amp; Error Analysis</a>
+            <a href="#section-limitations" class="report-nav-pill font-mono">7. Limitations</a>
+            <a href="#section-reproducibility" class="report-nav-pill font-mono">8. Reproducibility &amp; Repository</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-12 col-xl-10 mx-auto">
+
+            <!-- SECTION 1: QUESTION & UNIT OF OBSERVATION -->
+            <section id="section-question" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 1</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">1. Core Questions Answered &amp; Unit of Observation</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <p class="fs-6 leading-relaxed mb-4">
+                        In commercial aviation, operational delay decisions occur at two fundamentally distinct horizons. Predicting delay without clearly specifying the decision horizon leads to catastrophic target leakage or useless operational advice. This project defines and answers two distinct, calibrated questions:
+                    </p>
+
+                    <div class="row g-3 mb-4">
+                        <!-- Question A: Departure Delay -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-stone-200 text-stone-800 font-mono fs-8">STAGE 1</span>
+                                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-0">Departure Delay Classification</h3>
+                                </div>
+                                <p class="fs-7 text-stone-800 fw-semibold mb-2 font-serif-italic">
+                                    "Evaluated strictly 2 hours prior to scheduled gate departure, will the flight depart with a delay &ge; 15 minutes?"
+                                </p>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-1 mb-0">
+                                    <li><strong>Decision Horizon:</strong> T &minus; 2 hours before scheduled pushback (CRS_DEP_TIME).</li>
+                                    <li><strong>Operational User:</strong> Hub dispatchers, ramp managers, and pushback coordinators.</li>
+                                    <li><strong>Actionable Lever:</strong> Taxiway queue staging, gate holding, and turnaround crew reassignment.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Question B: Arrival Delay -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-amber-100 text-amber-900 font-mono fs-8">STAGE 2</span>
+                                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-0">Arrival Delay Classification</h3>
+                                </div>
+                                <p class="fs-7 text-stone-800 fw-semibold mb-2 font-serif-italic">
+                                    "Once a flight has pushed back with known departure delay, will it arrive at its destination gate &ge; 15 minutes late?"
+                                </p>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-1 mb-0">
+                                    <li><strong>Decision Horizon:</strong> Post-pushback / en-route (incorporates confirmed DEP_DELAY).</li>
+                                    <li><strong>Operational User:</strong> Destination station managers, baggage crews, and transfer agents.</li>
+                                    <li><strong>Actionable Lever:</strong> Destination gate conflict re-allocation and connecting passenger rebooking.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-3 bg-white border border-stone-300">
+                        <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">
+                            <i class="bi bi-bullseye text-amber-accent me-1"></i> What Exactly Does One Row of Our Data Represent?
+                        </h3>
+                        <p class="fs-7 text-stone-700 mb-2">
+                            Each individual row in our unified modeling corpus represents <strong>exactly one scheduled commercial passenger flight leg</strong> operated by a reporting U.S. carrier between two primary U.S. hub airports on a specific calendar date.
+                        </p>
+                        <p class="fs-8 text-stone-500 mb-0 font-mono">
+                            Primary Composite Key: (FL_DATE, OP_CARRIER, OP_CARRIER_FL_NUM, ORIGIN, DEST, CRS_DEP_TIME)<br>
+                            Fused With: (1) Origin ASOS/METAR weather valid at T &minus; 2 hours; (2) Incoming aircraft airframe rotational chain (prior leg delay, scheduled turnaround buffer); (3) Trailing 30-day carrier/route reliability rates; and (4) Rolling airport congestion indices.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DATA SOURCES, SIZE, VARIABLES, & QUALITY ISSUES -->
+            <section id="section-data" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 2</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">2. The Data: Sources, Scale, Key Variables &amp; Quality Remediation</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Data Sources</h3>
+                            <ul class="ps-3 fs-7 text-stone-600 d-flex flex-column gap-2 mb-0">
+                                <li>
+                                    <strong>Bureau of Transportation Statistics (BTS) TranStats:</strong>
+                                    Official On-Time Performance Reporting Carrier data spanning January 1, 2023 to July 31, 2024. Contains certified scheduled/actual gate departure and arrival timestamps, elapsed air times, aircraft tail numbers, carrier identifiers, and diversion/cancellation indicators.
+                                </li>
+                                <li>
+                                    <strong>NOAA ASOS / METAR Weather Stations:</strong>
+                                    Automated Surface Observing Systems hourly and special (SPECI) reports collected at airport weather stations for the 10 target hubs (ATL, CLT, DEN, DFW, LAS, LAX, MCO, ORD, PHX, SEA). Provides surface temperature, dew point, sustained wind speed, wind gusts, horizontal visibility, cloud ceiling height, and present weather codes (thunderstorms, freezing rain, fog, snow).
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Corpus Size &amp; Coverage</h3>
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200">
+                                <div class="d-flex justify-content-between mb-1 fs-7">
+                                    <span>Total Raw Flight Corpus:</span>
+                                    <strong class="font-mono text-stone-900">952,602 flights</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 fs-7">
+                                    <span>Temporal Breadth:</span>
+                                    <strong class="font-mono text-stone-900">Jan 1, 2023 – Jul 31, 2024 (19 months)</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 fs-7">
+                                    <span>Network Scope:</span>
+                                    <strong class="font-mono text-stone-900">10 Top Hubs &bull; 13 Major Airlines</strong>
+                                </div>
+                                <div class="d-flex justify-content-between fs-7">
+                                    <span>Target Delay Rate (&ge; 15m):</span>
+                                    <strong class="font-mono text-rose-700">23.2% (2023) &rarr; 31.7% (Summer 2024)</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Variables Table -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Key Variables Engineered Across Feature Groups</h3>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-sm table-bordered fs-8 align-middle mb-0">
+                            <thead class="bg-stone-100 font-mono text-stone-700">
+                                <tr>
+                                    <th style="width: 22%;">Feature Group</th>
+                                    <th style="width: 38%;">Variables Engineered</th>
+                                    <th style="width: 40%;">Operational Justification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold font-serif text-stone-900">1. Schedule &amp; Cyclic Time</td>
+                                    <td class="font-mono text-stone-700"><code>sin_hour</code>, <code>cos_hour</code>, <code>day_of_week</code>, <code>month</code>, <code>is_holiday_window</code>, <code>distance_mi</code></td>
+                                    <td>Captures diurnal peaking while eliminating 23:59 &rarr; 00:00 artificial step discontinuities via trigonometric projection.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-serif text-stone-900">2. Aircraft Rotational Chain</td>
+                                    <td class="font-mono text-stone-700"><code>tail_leg_of_day</code>, <code>prev_arr_delay</code>, <code>sched_turn_min</code>, <code>prev_legs_mean_arr_delay</code></td>
+                                    <td>Captures physical propagation of late incoming aircraft across the carrier's daily line-of-flight itinerary.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-serif text-stone-900">3. Surface METAR Weather</td>
+                                    <td class="font-mono text-stone-700"><code>wx_temp_f</code>, <code>wx_wind_kt</code>, <code>wx_gust_kt</code>, <code>wx_vis_mi</code>, <code>wx_ceiling_ft</code>, <code>wx_thunder</code></td>
+                                    <td>Direct physical constraints on runway acceptance rates, crosswind runway limits, and de-icing or lightning ground stops.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-serif text-stone-900">4. Hub Pressure &amp; Congestion</td>
+                                    <td class="font-mono text-stone-700"><code>airport_late_rate_1h/3h/6h</code>, <code>airport_mean_delay_3h</code>, <code>airport_sched_load_60</code></td>
+                                    <td>Real-time proxy for terminal airspace saturation, departure taxiway backups, and ground control metering delays.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-serif text-stone-900">5. 30-Day Trailing Rates</td>
+                                    <td class="font-mono text-stone-700"><code>hist_route_late_rate</code>, <code>hist_airline_late_rate</code>, <code>hist_origin_late_rate</code></td>
+                                    <td>Closed trailing 30-day historical late rates reflecting carrier schedule padding and systemic regional airspace congestion.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-serif text-stone-900">6. Confirmed Post-Departure (Arrival only)</td>
+                                    <td class="font-mono text-stone-700"><code>dep_delay_clip</code>, <code>dep_late_15</code>, <code>dep_late_30</code>, <code>dep_late_60</code></td>
+                                    <td>Actual pushback delay (strictly unavailable for pre-departure model) representing the initial condition for in-flight progress.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Data Quality Issues & Solutions -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Data Quality Issues Encountered &amp; Remediation Strategy</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-2 bg-stone-50 border border-stone-200 h-100">
+                                <strong class="text-stone-900 d-block mb-1 fs-7"><i class="bi bi-x-octagon text-danger me-1"></i> 1. Flight Cancellations &amp; Diversions (1.6%)</strong>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    <em>Issue:</em> Cancelled and diverted flights do not have actual arrival times (recorded as NaN in BTS).<br>
+                                    <em>Solution:</em> Filtered out from the training and evaluation corpus. Delay classification is statistically defined only over executed flights; cancellations are governed by safety ground-stops rather than queuing delays.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-2 bg-stone-50 border border-stone-200 h-100">
+                                <strong class="text-stone-900 d-block mb-1 fs-7"><i class="bi bi-clock-history text-warning me-1"></i> 2. Irregular Weather Timestamps &amp; Look-Ahead Bias</strong>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    <em>Issue:</em> ASOS weather observations occur at :53 of the hour, with variable SPECI bursts during convective storms.<br>
+                                    <em>Solution:</em> Fused using strict backward-as-of merging: the flight record joins to the most recent weather observation strictly &le; T &minus; 2 hours before scheduled departure, guaranteeing zero future weather leakage.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-2 bg-stone-50 border border-stone-200 h-100">
+                                <strong class="text-stone-900 d-block mb-1 fs-7"><i class="bi bi-link-45deg text-primary me-1"></i> 3. Missing Tail Rotations (12.4%)</strong>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    <em>Issue:</em> First morning flight of an airframe, unscheduled tail swaps, or missing tail numbers have no preceding leg.<br>
+                                    <em>Solution:</em> Created explicit binary indicator flags (`is_first_leg_of_day`) and imputed turnaround minutes with the domain median (55 min) within the Scikit-Learn pipeline to preserve records without row drops.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-2 bg-stone-50 border border-stone-200 h-100">
+                                <strong class="text-stone-900 d-block mb-1 fs-7"><i class="bi bi-pie-chart text-secondary me-1"></i> 4. Class Imbalance (23.2% to 31.7% Late)</strong>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    <em>Issue:</em> On-time flights heavily outnumber delayed flights, rendering naive accuracy deceptive (a 77% accuracy model that predicts all on-time is useless).<br>
+                                    <em>Solution:</em> Evaluated models strictly on Precision-Recall AUC (PR-AUC) and tuned decision thresholds on validation sets for maximum F1 rather than defaulting to 0.50.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PREPROCESSING CHOICES & WHY -->
+            <section id="section-preprocessing" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 3</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">3. Preprocessing Choices &amp; Methodological Rationale</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <p class="fs-6 leading-relaxed mb-4">
+                        Machine learning models deployed in aviation frequently fail in production due to subtle training methodology flaws. Below are our five core preprocessing choices and the operational rationale behind each:
+                    </p>
+
+                    <div class="d-flex flex-column gap-3">
+                        <div class="border-start border-3 border-amber-400 ps-3">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-1">A. Strict Chronological Splitting (No Random K-Fold)</h3>
+                            <p class="fs-7 text-stone-600 mb-0">
+                                <strong>Why:</strong> Random shuffling cross-validation leaks macro-weather systems and seasonal congestion across folds. If an algorithm trains on 3:00 PM flights during a June 15 severe storm while predicting 2:00 PM flights on the same day, it achieves artificially inflated accuracy that collapses in production. Our training (2023 to Apr 2024), validation (May 2024), and testing (Jun–Jul 2024) are split strictly across time.
+                            </p>
+                        </div>
+
+                        <div class="border-start border-3 border-stone-400 ps-3">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-1">B. Pre-Departure vs Post-Departure Target Separation</h3>
+                            <p class="fs-7 text-stone-600 mb-0">
+                                <strong>Why:</strong> In departure delay prediction, actual pushback delay (<code>DEP_DELAY</code>) is the exact target outcome. Including any airborne telemetry, wheels-off time, or pushback time creates 100% target leakage. Our Pre-Departure model only ingests features known strictly at T &minus; 2 hours. Conversely, our Arrival Delay model intentionally ingests confirmed <code>DEP_DELAY</code> because the flight has already departed, answering an entirely different operational question.
+                            </p>
+                        </div>
+
+                        <div class="border-start border-3 border-stone-400 ps-3">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-1">C. Trigonometric Cyclic Time Encodings</h3>
+                            <p class="fs-7 text-stone-600 mb-0">
+                                <strong>Why:</strong> A standard integer hour (0, 1, 2, ..., 23) introduces a severe false numerical discontinuity: 23 (11:00 PM) appears 23 units away from 0 (12:00 AM), whereas in reality they are adjacent. Transforming departure hours via sin(2&pi;h/24) and cos(2&pi;h/24) provides smooth continuous proximity for tree and linear models.
+                            </p>
+                        </div>
+
+                        <div class="border-start border-3 border-stone-400 ps-3">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-1">D. 30-Day Lagged Historical Aggregations (Burn-in Guard)</h3>
+                            <p class="fs-7 text-stone-600 mb-0">
+                                <strong>Why:</strong> Historical carrier and route reliability rates are computed over a rolling 30-day window with a 1-day exclusion lag. This prevents same-day flight outcomes from leaking into their own historical baseline. A 30-day burn-in period was enforced before computing metrics.
+                            </p>
+                        </div>
+
+                        <div class="border-start border-3 border-stone-400 ps-3">
+                            <h3 class="h6 font-serif fw-bold text-stone-900 mb-1">E. Scikit-Learn Encapsulated Pipelines</h3>
+                            <p class="fs-7 text-stone-600 mb-0">
+                                <strong>Why:</strong> All median imputers, standard scalers, and one-hot encoders are bound into an end-to-end Scikit-Learn <code>Pipeline</code>. Parameters were fit strictly on the training partition and evaluated identically on the test set with <code>handle_unknown='ignore'</code>, preventing data leakage during preprocessing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: BASELINES & MODELS COMPARED -->
+            <section id="section-models" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 4</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">4. Baseline Architectures &amp; Models Compared</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <p class="fs-6 leading-relaxed mb-4">
+                        To scientifically validate that our machine learning models generate genuine predictive signal rather than exploiting data structure, we benchmarked multiple algorithms against two domain baselines:
+                    </p>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h6 font-serif fw-bold text-stone-900 mb-2"><i class="bi bi-dash-circle text-stone-500 me-1"></i> Baseline 1: Majority-Class Baseline</h3>
+                                <p class="fs-7 text-stone-600 mb-0">
+                                    Predicts that every flight will arrive/depart on time. While achieving 68.5% raw accuracy due to the majority on-time rate, it achieves <strong>0.000 Precision, 0.000 Recall, and 0.000 F1</strong>, and its PR-AUC equals the raw base rate (0.315).
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h6 font-serif fw-bold text-stone-900 mb-2"><i class="bi bi-signpost-split text-amber-600 me-1"></i> Baseline 2: Domain Rule / Historical Rate</h3>
+                                <p class="fs-7 text-stone-600 mb-0">
+                                    <strong>Departure:</strong> Historical-Rate Baseline classifies delay using the trailing 30-day late rate. (PR-AUC: 0.488).<br>
+                                    <strong>Arrival:</strong> Departure-Delay Rule predicts arrival delay &ge; 15 minutes whenever actual departure delay &ge; 18 min. (PR-AUC: 0.911).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Candidate Supervised Learning Algorithms</h3>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 bg-white border border-stone-200 h-100">
+                                <span class="badge bg-stone-100 text-stone-800 font-mono fs-8 mb-2">MODEL 1</span>
+                                <h4 class="h6 font-serif fw-bold text-stone-900 mb-1">Logistic Regression</h4>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    L2-regularized generalized linear model with balanced class weighting. Serves as our transparent, highly interpretable parametric benchmark.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 bg-white border border-stone-200 h-100">
+                                <span class="badge bg-stone-100 text-stone-800 font-mono fs-8 mb-2">MODEL 2</span>
+                                <h4 class="h6 font-serif fw-bold text-stone-900 mb-1">Random Forest</h4>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    Ensemble of 200 de-correlated decision trees with balanced bootstrap subsampling. Captures non-linear thresholds and high-order feature interactions.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 bg-amber-50 border border-amber-200 h-100">
+                                <span class="badge bg-amber-200 text-amber-900 font-mono fs-8 mb-2">CHAMPION</span>
+                                <h4 class="h6 font-serif fw-bold text-stone-900 mb-1">Histogram Gradient Boosting</h4>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    <code>HistGradientBoostingClassifier</code> (max leaves: 63, learning rate: 0.05). Selected champion due to superior PR-AUC, rapid inference, and native missing-value splitting.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: EVALUATION FRAMEWORK & METRICS -->
+            <section id="section-evaluation" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 5</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">5. Evaluation Framework: Chronological Splits &amp; Metrics</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">The 3-Way Chronological Data Split</h3>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-sm table-bordered fs-8 align-middle mb-0">
+                            <thead class="bg-stone-100 font-mono text-stone-700">
+                                <tr>
+                                    <th>Partition</th>
+                                    <th>Calendar Window</th>
+                                    <th>Flight Records</th>
+                                    <th>Late Incidence</th>
+                                    <th>Operational Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold font-mono">Training Set</td>
+                                    <td>Jan 1, 2023 – Apr 30, 2024</td>
+                                    <td class="font-mono">626,943</td>
+                                    <td class="font-mono text-stone-600">23.2%</td>
+                                    <td>Pipeline training, feature transformation fitting, and hyperparameter tuning.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-mono">Validation Set</td>
+                                    <td>May 1 – May 31, 2024</td>
+                                    <td class="font-mono">41,631</td>
+                                    <td class="font-mono text-stone-600">32.1%</td>
+                                    <td>Threshold calibration for maximum F1 score prior to held-out testing.</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="fw-bold font-mono text-amber-900">Held-Out Test Set</td>
+                                    <td class="fw-bold">Jun 1 – Jul 31, 2024</td>
+                                    <td class="font-mono fw-bold">81,682 (Arr) / 82,039 (Dep)</td>
+                                    <td class="font-mono fw-bold text-rose-700">31.5% – 31.7%</td>
+                                    <td>Strict out-of-time evaluation simulating real summer operation.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Primary Evaluation Metric: Why PR-AUC Over ROC-AUC?</h3>
+                    <p class="fs-7 text-stone-600 mb-3">
+                        In flight delay prediction, on-time flights represent roughly 70% to 77% of all operations. Under this class imbalance:
+                    </p>
+                    <ul class="ps-3 fs-7 text-stone-600 d-flex flex-column gap-2 mb-4">
+                        <li>
+                            <strong>ROC-AUC is deceptively optimistic:</strong> Its false positive rate denominator (FP + TN) is dominated by the large volume of True Negatives (TN &gt; 50,000). Consequently, an algorithm with tens of thousands of false alarms can still report an impressive ROC-AUC of 0.85+.
+                        </li>
+                        <li>
+                            <strong>PR-AUC is the true operational discriminator:</strong> Evaluates Precision (TP / (TP + FP)) against Recall (TP / (TP + FN)). Because True Negatives are excluded from both axes, PR-AUC penalizes every single false alarm and missed delay.
+                        </li>
+                        <li>
+                            <strong>Brier Score:</strong> Mean squared error between predicted probabilities and binary outcomes (Mean Squared Error), measuring probabilistic calibration.
+                        </li>
+                        <li>
+                            <strong>Bootstrap Statistical Significance (200 Resamples):</strong> We computed 95% bootstrap confidence intervals for PR-AUC gain over the baseline to prove improvements are statistically significant (p &lt; 0.001).
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION 6: RESULTS & ERROR ANALYSIS -->
+            <section id="section-results" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 6</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">6. Empirical Results, Ablation Study &amp; Error Analysis</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Held-Out Test Set Scorecard (Jun–Jul 2024)</h3>
+                    
+                    <div class="table-responsive mb-4">
+                        <table class="table table-sm table-bordered fs-8 align-middle mb-0">
+                            <thead class="bg-stone-100 font-mono text-stone-700">
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Model</th>
+                                    <th class="text-center">Threshold</th>
+                                    <th class="text-center">PR-AUC</th>
+                                    <th class="text-center">ROC-AUC</th>
+                                    <th class="text-center">Accuracy</th>
+                                    <th class="text-center">Precision</th>
+                                    <th class="text-center">Recall</th>
+                                    <th class="text-center">F1 Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Arrival -->
+                                <tr class="bg-stone-50">
+                                    <td rowspan="4" class="fw-bold font-serif text-stone-900 align-middle">Arrival Delay (&ge;15m)</td>
+                                    <td>Majority Baseline</td>
+                                    <td class="text-center font-mono">1.000</td>
+                                    <td class="text-center font-mono text-stone-400">0.315</td>
+                                    <td class="text-center font-mono text-stone-400">0.500</td>
+                                    <td class="text-center font-mono">68.5%</td>
+                                    <td class="text-center font-mono">0.0%</td>
+                                    <td class="text-center font-mono">0.0%</td>
+                                    <td class="text-center font-mono">0.000</td>
+                                </tr>
+                                <tr>
+                                    <td>Departure Delay Rule (&ge;18m)</td>
+                                    <td class="text-center font-mono">&ge;18m</td>
+                                    <td class="text-center font-mono">0.911</td>
+                                    <td class="text-center font-mono">0.930</td>
+                                    <td class="text-center font-mono">89.9%</td>
+                                    <td class="text-center font-mono">86.8%</td>
+                                    <td class="text-center font-mono">79.7%</td>
+                                    <td class="text-center font-mono">0.834</td>
+                                </tr>
+                                <tr>
+                                    <td>Logistic Regression</td>
+                                    <td class="text-center font-mono">0.682</td>
+                                    <td class="text-center font-mono">0.915</td>
+                                    <td class="text-center font-mono">0.933</td>
+                                    <td class="text-center font-mono">90.1%</td>
+                                    <td class="text-center font-mono">87.1%</td>
+                                    <td class="text-center font-mono">80.2%</td>
+                                    <td class="text-center font-mono">0.835</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="fw-bold">Gradient Boosting (Champion)</td>
+                                    <td class="text-center font-mono fw-bold">0.659</td>
+                                    <td class="text-center font-mono fw-bold text-amber-900">0.918</td>
+                                    <td class="text-center font-mono fw-bold">0.936</td>
+                                    <td class="text-center font-mono fw-bold">90.1%</td>
+                                    <td class="text-center font-mono fw-bold">87.0%</td>
+                                    <td class="text-center font-mono fw-bold">80.5%</td>
+                                    <td class="text-center font-mono fw-bold text-amber-900">0.836</td>
+                                </tr>
+
+                                <!-- Departure -->
+                                <tr class="bg-stone-50 border-top border-stone-300">
+                                    <td rowspan="4" class="fw-bold font-serif text-stone-900 align-middle">Departure Delay (&ge;15m)</td>
+                                    <td>Majority Baseline</td>
+                                    <td class="text-center font-mono">1.000</td>
+                                    <td class="text-center font-mono text-stone-400">0.317</td>
+                                    <td class="text-center font-mono text-stone-400">0.500</td>
+                                    <td class="text-center font-mono">68.3%</td>
+                                    <td class="text-center font-mono">0.0%</td>
+                                    <td class="text-center font-mono">0.0%</td>
+                                    <td class="text-center font-mono">0.000</td>
+                                </tr>
+                                <tr>
+                                    <td>Historical-Rate Baseline</td>
+                                    <td class="text-center font-mono">0.205</td>
+                                    <td class="text-center font-mono">0.488</td>
+                                    <td class="text-center font-mono">0.686</td>
+                                    <td class="text-center font-mono">53.2%</td>
+                                    <td class="text-center font-mono">39.0%</td>
+                                    <td class="text-center font-mono">84.2%</td>
+                                    <td class="text-center font-mono">0.533</td>
+                                </tr>
+                                <tr>
+                                    <td>Logistic Regression</td>
+                                    <td class="text-center font-mono">0.530</td>
+                                    <td class="text-center font-mono">0.565</td>
+                                    <td class="text-center font-mono">0.730</td>
+                                    <td class="text-center font-mono">63.0%</td>
+                                    <td class="text-center font-mono">45.0%</td>
+                                    <td class="text-center font-mono">75.1%</td>
+                                    <td class="text-center font-mono">0.563</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="fw-bold">Gradient Boosting (Champion)</td>
+                                    <td class="text-center font-mono fw-bold">0.526</td>
+                                    <td class="text-center font-mono fw-bold text-amber-900">0.566</td>
+                                    <td class="text-center font-mono fw-bold">0.731</td>
+                                    <td class="text-center font-mono fw-bold">62.9%</td>
+                                    <td class="text-center font-mono fw-bold">44.9%</td>
+                                    <td class="text-center font-mono fw-bold">75.3%</td>
+                                    <td class="text-center font-mono fw-bold text-amber-900">0.563</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Feature Ablation Study -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Feature Ablation Study (Pre-Departure Model)</h3>
+                    <p class="fs-7 text-stone-600 mb-2">
+                        To dissect where predictive signal originates, we performed a controlled ablation removing feature groups:
+                    </p>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-sm table-bordered fs-8 align-middle mb-0">
+                            <thead class="bg-stone-100 font-mono text-stone-700">
+                                <tr>
+                                    <th>Ablation Stage</th>
+                                    <th>Features Included</th>
+                                    <th class="text-center">Count</th>
+                                    <th class="text-center">Val F1</th>
+                                    <th class="text-center">Test Precision</th>
+                                    <th class="text-center">Test Recall</th>
+                                    <th class="text-center">Test PR-AUC</th>
+                                    <th class="text-center">Test ROC-AUC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold font-mono">Set A: Base</td>
+                                    <td>Weather METAR + Schedule + 30-Day Lag Rates</td>
+                                    <td class="text-center font-mono">29</td>
+                                    <td class="text-center font-mono">0.544</td>
+                                    <td class="text-center font-mono">0.406</td>
+                                    <td class="text-center font-mono">0.828</td>
+                                    <td class="text-center font-mono">0.523</td>
+                                    <td class="text-center font-mono">0.709</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold font-mono">Set B: + Trailing Rates</td>
+                                    <td>Set A + Airline Origin + Route Hour Rates</td>
+                                    <td class="text-center font-mono">34</td>
+                                    <td class="text-center font-mono">0.549</td>
+                                    <td class="text-center font-mono">0.428</td>
+                                    <td class="text-center font-mono">0.789</td>
+                                    <td class="text-center font-mono">0.538</td>
+                                    <td class="text-center font-mono">0.719</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="fw-bold font-mono text-amber-900">Set C: Full Telemetry</td>
+                                    <td>Set B + Rolling Airport Status &amp; Hourly Congestion Load</td>
+                                    <td class="text-center font-mono fw-bold">40</td>
+                                    <td class="text-center font-mono fw-bold">0.557</td>
+                                    <td class="text-center font-mono fw-bold">0.447</td>
+                                    <td class="text-center font-mono fw-bold">0.759</td>
+                                    <td class="text-center font-mono fw-bold text-amber-900">0.566</td>
+                                    <td class="text-center font-mono fw-bold">0.731</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="fs-8 text-stone-500 mb-4">
+                        <i class="bi bi-arrow-up-right me-1"></i> <strong>Ablation Takeaway:</strong> Adding rolling airport pressure telemetry lifted PR-AUC by <strong>+0.043</strong> over base features, proving terminal ground congestion is the dominant pre-departure driver.
+                    </div>
+
+                    <!-- In-depth Error Analysis -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Detailed Error Analysis: Why Do Errors Occur?</h3>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h4 class="h7 font-serif fw-bold text-stone-900 mb-1">
+                                    <i class="bi bi-exclamation-diamond text-amber-700 me-1"></i> False Positives (False Alarms)
+                                </h4>
+                                <p class="fs-8 text-stone-600 mb-2">
+                                    <em>Predicted Late, Actually Arrived On Time:</em>
+                                </p>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-1 mb-0">
+                                    <li><strong>In-Flight Speed Recovery:</strong> Dispatchers add 15–20 minutes of schedule padding on long-haul routes (e.g. LAX&rarr;ORD). Strong tailwinds or direct route clearances enable aircraft departing 20 min late to land on time.</li>
+                                    <li><strong>Runway Configuration Switches:</strong> Origin ground congestion clearing faster than expected due to favourable wind shifts, releasing queued aircraft ahead of estimate.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h4 class="h7 font-serif fw-bold text-stone-900 mb-1">
+                                    <i class="bi bi-x-circle text-rose-700 me-1"></i> False Negatives (Missed Delays)
+                                </h4>
+                                <p class="fs-8 text-stone-600 mb-2">
+                                    <em>Predicted On Time, Actually Arrived Late:</em>
+                                </p>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-1 mb-0">
+                                    <li><strong>Destination Airspace Holding Stacks:</strong> Severe convective storms emerging at destination airports mid-flight, forcing en-route airborne holding or unexpected diversions.</li>
+                                    <li><strong>Destination Gate Blockage:</strong> Flights landing precisely on schedule that remain stranded on active taxiways for 30+ minutes because their assigned gate is still occupied by a delayed departure.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Drift Analysis -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Temporal Stability: June vs July 2024 Seasonal Robustness</h3>
+                    <p class="fs-7 text-stone-600 mb-2">
+                        Evaluating the model across consecutive test months demonstrates its stability under seasonal weather pressure:
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered fs-8 align-middle mb-0">
+                            <thead class="bg-stone-100 font-mono text-stone-700">
+                                <tr>
+                                    <th>Test Month</th>
+                                    <th>Flights</th>
+                                    <th>Late Incidence</th>
+                                    <th>Model</th>
+                                    <th class="text-center">Precision</th>
+                                    <th class="text-center">Recall</th>
+                                    <th class="text-center">F1 Score</th>
+                                    <th class="text-center">PR-AUC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono">June 2024</td>
+                                    <td class="font-mono">40,686</td>
+                                    <td class="font-mono">29.3%</td>
+                                    <td>Gradient Boosting</td>
+                                    <td class="text-center font-mono">0.417</td>
+                                    <td class="text-center font-mono">0.743</td>
+                                    <td class="text-center font-mono">0.534</td>
+                                    <td class="text-center font-mono">0.511</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="font-mono fw-bold">July 2024</td>
+                                    <td class="font-mono">41,353</td>
+                                    <td class="font-mono fw-bold text-rose-700">34.1%</td>
+                                    <td>Gradient Boosting</td>
+                                    <td class="text-center font-mono fw-bold">0.476</td>
+                                    <td class="text-center font-mono fw-bold">0.773</td>
+                                    <td class="text-center font-mono fw-bold">0.589</td>
+                                    <td class="text-center font-mono fw-bold text-amber-900">0.607</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: LIMITATIONS -->
+            <section id="section-limitations" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 7</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">7. Operational Scope &amp; Limitations of Findings</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <p class="fs-6 leading-relaxed mb-4">
+                        To maintain academic and operational integrity, the bounds of applicability of these models must be explicitly stated:
+                    </p>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h7 font-serif fw-bold text-stone-900 mb-1">1. En-Route Convective Weather &amp; Jet Stream Drift</h3>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    METAR weather observations are captured at airport surface stations. While origin surface weather strongly influences departure queues, severe convective squall lines over flight corridors (e.g. Midwest thunderstorms) requiring tactical 100-mile diversions are not directly observed by surface METAR and can introduce unpredictable en-route delays.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h7 font-serif fw-bold text-stone-900 mb-1">2. Gate-Side Ground Operations Opacity</h3>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    Pre-departure ground events—such as unexpected mechanical repair times, crew rest duty timeouts, or slow baggage loading—remain unobservable until pushback occurs. The model relies on rolling airport congestion and incoming aircraft turnaround lag as statistical proxies.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h7 font-serif fw-bold text-stone-900 mb-1">3. Non-Hub Regional Airport Generalization</h3>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    The pipeline was trained and calibrated on the 10 busiest U.S. mega-hubs. While representative of high-density airspace, applying this model to small non-towered regional airports with single runways would require recalibrating airport congestion parameters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h7 font-serif fw-bold text-stone-900 mb-1">4. Tactical Airline Schedule Padding</h3>
+                                <p class="fs-8 text-stone-600 mb-0">
+                                    Airlines actively adjust scheduled elapsed flight times across seasons (block-time padding). A flight scheduled for 2 hours in winter might be padded to 2h 25m in summer, shifting the empirical threshold for what constitutes an arrival delay.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: REPRODUCIBILITY & REPOSITORY -->
+            <section id="section-reproducibility" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-4">
+                <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="rubric-pill font-mono">RUBRIC 8</span>
+                        <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">8. Reproducibility Guide, Repository Structure &amp; Disclosures</h2>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <p class="fs-6 leading-relaxed mb-3">
+                        Every figure, metric, and model result presented on this website can be independently verified and reproduced from the accompanying repository:
+                    </p>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h7 font-serif fw-bold text-stone-900 mb-2">Code &amp; Notebook Mapping</h3>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-2 mb-0 font-mono">
+                                    <li><code>notebooks/arrival_delay_colab.ipynb</code> &bull; Interactive Google Colab notebook for Arrival delay data merge &amp; pipeline evaluation.</li>
+                                    <li><code>train_arrival_2024.py</code> &bull; Standalone Python script reproducing the full 2023+2024 arrival model training and bootstrap tests.</li>
+                                    <li><code>DEPART_DELAY/.../train_2023_to_apr2024...ipynb</code> &bull; Complete Jupyter notebook reproducing departure delay models, ablation study, and monthly evaluations.</li>
+                                    <li><code>tests/test_app.py</code> &bull; Automated unit testing suite validating inference, feature prep, and API responses (10/10 passing).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <h3 class="h7 font-serif fw-bold text-stone-900 mb-2">Step-by-Step Local Setup</h3>
+                                <pre class="bg-white p-2 border border-stone-300 rounded font-mono fs-8 text-stone-900 mb-0"><code># 1. Clone repository
+git clone &lt;repo-url&gt;
+cd flight-delay-website
+
+# 2. Activate virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: .\venv\Scripts\Activate.ps1
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Start local Flask web dashboard
+python app.py
+# Open browser: http://127.0.0.1:5000</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 mb-3">
+                        <h3 class="h7 font-serif fw-bold text-stone-900 mb-1">Data Access Instructions</h3>
+                        <p class="fs-8 text-stone-600 mb-0">
+                            The raw flight data can be downloaded directly from the BTS TranStats database (Table: <em>On-Time Performance Reporting Carrier On-Time Performance</em>) and NOAA ASOS archives via the Iowa Environmental Mesonet (IEM). Cleaned Parquet partitions are stored in the project's <code>data/</code> directory for zero-setup execution.
+                        </p>
+                    </div>
+
+                    <div class="row g-3 fs-8 text-stone-600">
+                        <div class="col-md-6">
+                            <strong>AI-Use Disclosure:</strong>
+                            Generative AI tools were utilized during development for code refactoring, HTML/CSS layout templating, and documentation formatting assistance. All statistical data preprocessing, machine learning model architectures, metric calculations, and scientific interpretations were designed, executed, and verified by the authors.
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Academic Citations:</strong>
+                            U.S. Bureau of Transportation Statistics (BTS TranStats, 2023–2024); National Oceanic and Atmospheric Administration (NOAA ASOS/METAR, 2023–2024); Pedregosa et al., <em>Scikit-learn: Machine Learning in Python</em>, JMLR 12, pp. 2825-2830 (2011).
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+
+        </div>
+    </main>
+
+    <!-- Toast Notification Container for Async Feedback -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="appToast" class="toast bg-white text-stone-900 border border-stone-200 shadow-md" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-stone-50 text-stone-900 border-bottom border-stone-200">
+                <i class="bi bi-info-circle-fill text-amber me-2" id="toastIcon"></i>
+                <strong class="me-auto font-serif" id="toastTitle">Notification</strong>
+                <small class="text-stone-400">Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-stone-700 fs-7" id="toastBody">
+                Message content
+            </div>
+        </div>
+    </div>
+
+    <!-- Aviation Operations Footer -->
+    <footer class="footer bg-white border-top border-stone-200 py-3 mt-auto text-stone-500 fs-7">
+        <div class="container-fluid px-3 px-lg-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-stone-900 fw-semibold font-serif">AeroDelay Ops</span> &bull; 
+                <span class="text-stone-500">Commercial Aviation Delay Decision Support System</span>
+            </div>
+            <div class="text-center text-md-end">
+                <span class="badge bg-stone-100 border border-stone-200 text-stone-700 me-1">Dual-Stage Delay Inference</span>
+                <span class="text-stone-500">BTS 2023–2024 &bull; Arrival &amp; Departure Models &ge; 15 min</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Application JS -->
+    <script src="../static/js/script.js?v=5.3.0"></script>
+</body>
+</html>

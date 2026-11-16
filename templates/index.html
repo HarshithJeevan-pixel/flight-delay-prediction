@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}AeroDelay Ops | Operational Flight Delay Intelligence{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-lg-10 col-xl-9 text-center">
+
+        <!-- Italic Eyebrow -->
+        <p class="font-serif-italic text-stone-500 fs-6 mb-2">operational decision support &amp; empirical machine learning</p>
+
+        <!-- Main Editorial Headline -->
+        <h1 class="display-5 font-serif text-stone-900 mb-3 tracking-tight">
+            Clarity for flight operations &mdash; <br>
+            when everything looks on schedule, <span class="text-amber-highlight">but isn't</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="lead text-stone-600 mb-4 mx-auto fs-6" style="max-width: 680px; line-height: 1.75;">
+            An empirical aviation machine-learning system predicting 15+ minute arrival delays (post-departure) and departure delays (pre-departure) trained on 952k commercial flights, surface METAR weather, and aircraft rotation chains across the 10 busiest US hubs.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="d-flex flex-wrap justify-content-center gap-3 mb-2">
+            <a href="{{ url_for('performance') }}" class="btn btn-amber-pill btn-lg px-4 py-3 fw-semibold shadow-xs">
+                <i class="bi bi-sliders2 me-1"></i> Explore Interactive Benchmarks
+            </a>
+            <a href="{{ url_for('predict_page') }}" class="btn btn-stone-pill btn-lg px-4 py-3 fw-semibold shadow-xs">
+                <i class="bi bi-airplane-engines me-1"></i> Test Flight Predictions
+            </a>
+        </div>
+
+        <!-- Microcopy Under Button -->
+        <div class="text-stone-400 fs-8 mb-5">
+            BTS 2023–2024 operations &bull; 952k records &bull; Chronological held-out evaluation &bull; Ground-truth verified
+        </div>
+
+        <!-- Project Executive Summary Cards: 4 Pillars of the Submission -->
+        <div class="border-top border-stone-200 pt-5 text-start">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-baseline mb-4">
+                <div>
+                    <h2 class="h4 font-serif text-stone-900 mb-1">Executive Summary of Project Reasoning</h2>
+                    <p class="font-serif-italic text-stone-500 fs-7 mb-0">From operational questions to empirical findings &amp; conclusions</p>
+                </div>
+                <a href="{{ url_for('about') }}" class="text-stone-500 fs-8 text-decoration-none font-mono mt-2 mt-md-0">
+                    Read Full Methodology Report &rarr;
+                </a>
+            </div>
+
+            <div class="row g-3 mb-5">
+                <!-- Pillar 1: Question & Observation -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 rounded-3 bg-white border border-stone-200 h-100 shadow-xs">
+                        <div class="badge bg-stone-100 text-stone-700 font-mono fs-8 mb-2">1. QUESTIONS &amp; UNIT</div>
+                        <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Dual Decision Horizons</h3>
+                        <p class="fs-8 text-stone-600 mb-2">
+                            <strong>Pre-Departure (T-2h):</strong> Will the flight depart &ge;15 min late?<br>
+                            <strong>Post-Departure:</strong> Will the flight arrive &ge;15 min late?
+                        </p>
+                        <div class="fs-8 text-stone-500 pt-2 border-top border-stone-100">
+                            <strong>One Row:</strong> One scheduled commercial flight leg operating between top hubs, joined with origin METAR weather &amp; incoming aircraft turnaround history.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: Data & Preprocessing -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 rounded-3 bg-white border border-stone-200 h-100 shadow-xs">
+                        <div class="badge bg-stone-100 text-stone-700 font-mono fs-8 mb-2">2. DATA &amp; LEAKAGE</div>
+                        <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">952k Cleaned Records</h3>
+                        <p class="fs-8 text-stone-600 mb-2">
+                            BTS TranStats + NOAA ASOS/METAR stations across 10 hubs (ATL, ORD, DFW, DEN, etc.) from Jan 2023 to Jul 2024.
+                        </p>
+                        <div class="fs-8 text-stone-500 pt-2 border-top border-stone-100">
+                            <strong>Leakage Guard:</strong> Strict chronological split (Train: 2023–Apr 2024; Val: May 2024; Held-Out Test: Jun–Jul 2024). Weather merged strictly as-of T &minus; 2 hours.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 3: Models & Metrics -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 rounded-3 bg-white border border-stone-200 h-100 shadow-xs">
+                        <div class="badge bg-stone-100 text-stone-700 font-mono fs-8 mb-2">3. BENCHMARKS &amp; METRIC</div>
+                        <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Calibrated GBDT</h3>
+                        <p class="fs-8 text-stone-600 mb-2">
+                            Evaluated against Majority-Class &amp; Domain Rule baselines, Logistic Regression, Random Forest, and <code>HistGradientBoosting</code>.
+                        </p>
+                        <div class="fs-8 text-stone-500 pt-2 border-top border-stone-100">
+                            <strong>Primary Metric:</strong> PR-AUC (Precision-Recall Area Under Curve), the gold standard for imbalanced aviation delays.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 4: Results & Impact -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 rounded-3 bg-white border border-stone-200 h-100 shadow-xs">
+                        <div class="badge bg-amber-100 text-amber-900 font-mono fs-8 mb-2">4. RESULTS &amp; ANALYSIS</div>
+                        <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Statistically Significant</h3>
+                        <p class="fs-8 text-stone-600 mb-2">
+                            <strong>Arrival PR-AUC:</strong> 0.918 (F1: 0.836)<br>
+                            <strong>Departure PR-AUC:</strong> 0.566 (F1: 0.563)
+                        </p>
+                        <div class="fs-8 text-stone-500 pt-2 border-top border-stone-100">
+                            <strong>Bootstrap test:</strong> Both models beat domain baselines with 95% CI strictly above zero (p &lt; 0.001).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Interactive Pathways for Arrival and Departure -->
+            <div class="p-4 rounded-3 bg-stone-50 border border-stone-200 mb-5">
+                <div class="row align-items-center g-3">
+                    <div class="col-lg-8">
+                        <h3 class="h5 font-serif fw-bold text-stone-900 mb-1">
+                            <i class="bi bi-hand-index-thumb text-amber-accent me-1"></i> Interactive Result Exploration
+                        </h3>
+                        <p class="fs-7 text-stone-600 mb-0">
+                            Explore our results through two dedicated interactive modules for both Arrival and Departure:
+                            (1) Sweep classification decision thresholds to observe real-world operational tradeoffs between false alarms and missed delays;
+                            (2) Step through feature ablation stages to see how airport congestion and aircraft rotation telemetry lift predictive power.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="{{ url_for('performance') }}" class="btn btn-amber-pill px-4 py-2 fs-7 fw-semibold">
+                            Launch Interactive Explorer &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Methodology Summary Quotes -->
+            <div class="row g-4 text-start justify-content-center mb-4">
+                <div class="col-md-4">
+                    <div class="border-start border-stone-300 ps-3 h-100">
+                        <p class="text-stone-700 fs-7 mb-2 font-serif-italic">"Standard 15+ minute FAA threshold calibrated across 10 major US hubs."</p>
+                        <span class="fs-8 text-stone-400 font-mono">&mdash; Target Definition</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border-start border-stone-300 ps-3 h-100">
+                        <p class="text-stone-700 fs-7 mb-2 font-serif-italic">"Surface METAR observations fused 2 hours before scheduled departure."</p>
+                        <span class="fs-8 text-stone-400 font-mono">&mdash; Weather Telemetry</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border-start border-stone-300 ps-3 h-100">
+                        <p class="text-stone-700 fs-7 mb-2 font-serif-italic">"HistGradientBoosting decision trees tuned for maximum F1 &amp; PR-AUC."</p>
+                        <span class="fs-8 text-stone-400 font-mono">&mdash; Calibrated ML</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Repository & Reproduction Callout -->
+            <div class="border-top border-stone-200 pt-4 text-center text-md-start d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div>
+                    <span class="badge bg-stone-100 text-stone-700 font-mono fs-8 me-2">REPRODUCIBILITY</span>
+                    <span class="fs-7 text-stone-600">All code, notebooks, and exact data splits are fully reproducible in the project repository.</span>
+                </div>
+                <a href="{{ url_for('about') }}#section-reproducibility" class="btn btn-stone-pill px-3 py-2 fs-8 font-mono">
+                    <i class="bi bi-github me-1"></i> Reproduction Steps
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

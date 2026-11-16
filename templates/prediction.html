@@ -1,0 +1,468 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="prediction-container py-2">
+    <!-- Page Header (Editorial Serif Style) -->
+    <div class="mb-4">
+        <p class="font-serif-italic text-stone-500 fs-7 mb-1">decision support &amp; inference</p>
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+            <h1 class="h3 font-serif fw-normal text-stone-900 mb-0">Flight Delay Operations &mdash; <span class="text-amber-highlight">Inference</span></h1>
+            <span class="badge bg-stone-100 text-stone-700 border border-stone-200 fs-8 font-mono">2023–2024 DUAL-STAGE ML</span>
+        </div>
+        <p class="text-stone-500 mb-0 fs-7" style="max-width: 720px;">
+            Search historical operational flight records across 2023–2024 (952k records) and predict 15+ minute arrival delays or departure delays using trained machine learning models.
+        </p>
+    </div>
+
+    <!-- Quick Example Buttons Row (Clean Light Pills) -->
+    <div class="quick-examples-box bg-white border border-stone-200 rounded-3 p-3 mb-4 shadow-xs">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-2">
+            <span class="text-stone-700 fs-7 fw-semibold d-flex align-items-center gap-1 font-serif">
+                <i class="bi bi-stars text-amber-accent"></i> One-Click Test Scenarios:
+            </span>
+            <span class="text-stone-400 fs-8">Select a preset to auto-load flight data &amp; generate prediction</span>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            {% for sample in sample_flights %}
+            <button type="button" class="btn sample-chip sample-btn text-start d-flex align-items-center gap-2 px-3 py-2"
+                    data-date="{{ sample.date }}"
+                    data-flight="{{ sample.flight_number }}"
+                    data-airline="{{ sample.airline }}"
+                    data-origin="{{ sample.origin }}"
+                    data-target="{{ sample.target_type|default('arrival') }}">
+                <span class="sample-chip-badge badge-{{ sample.split_badge_color }} font-mono fs-8">{{ sample.split_tag }}</span>
+                <span class="font-mono text-stone-900 fw-bold">{{ sample.airline }} {{ sample.flight_number }}</span>
+                <span class="fs-7 text-stone-600">{{ sample.origin }}</span>
+                <span class="fs-8 text-stone-400 d-none d-lg-inline">({{ sample.date }})</span>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Search Form Card (Clean White Surface) -->
+    <div class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-4">
+        <div class="card-header bg-white border-bottom border-stone-100 py-3 d-flex justify-content-between align-items-center">
+            <h2 class="h6 font-serif fw-semibold text-stone-900 mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-search text-stone-400"></i> Search Flight Operations
+            </h2>
+            <span class="badge bg-stone-100 text-stone-600 border border-stone-200 fs-8 font-mono">Dataset: 2023 &amp; 2024 Operations (952k Flights)</span>
+        </div>
+        <div class="card-body p-4">
+            <form id="flightSearchForm" class="row g-3">
+                <!-- Delay Target Model Selector (Clean Segmented Tray) -->
+                <div class="col-12 mb-2">
+                    <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 d-flex flex-column gap-2" id="targetObjectiveContainer">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fs-7 text-stone-700 fw-semibold font-serif" id="targetObjectiveHeader">
+                                    <i class="bi bi-crosshair2 text-amber-accent me-1" id="targetHeaderIcon"></i>Prediction Target:
+                                </span>
+                            </div>
+                            
+                            <!-- Segmented Pill Switch (Distinct Subtle Backgrounds) -->
+                            <div class="segmented-control" role="group" aria-label="Prediction Target Selection">
+                                <input type="radio" class="segmented-check" name="targetChoice" id="targetArrival" value="arrival" checked>
+                                <label class="segmented-btn seg-target-arrival" for="targetArrival">
+                                    <span class="seg-pip seg-pip-arrival"></span>
+                                    <span>Arrival Delay (&ge;15m)</span>
+                                    <span class="seg-pill-tag">Post-Dep</span>
+                                </label>
+
+                                <input type="radio" class="segmented-check" name="targetChoice" id="targetDeparture" value="departure">
+                                <label class="segmented-btn seg-target-departure" for="targetDeparture">
+                                    <span class="seg-pip seg-pip-departure"></span>
+                                    <span>Departure Delay (&ge;15m)</span>
+                                    <span class="seg-pill-tag">Pre-Dep</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="fs-8 pt-2 border-top border-stone-200 d-flex align-items-center gap-2" id="targetObjectiveDesc">
+                            <i class="bi bi-info-circle text-stone-400" id="targetDescIcon"></i>
+                            <span class="text-stone-600" id="targetObjectiveDescText"><strong>Post-Departure Inference:</strong> Predicts whether arrival delay will meet or exceed 15m after pushback using confirmed departure delay &amp; destination weather.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flight Date -->
+                <div class="col-12 col-md-3">
+                    <label for="flightDateInput" class="form-label text-stone-700 fs-7 fw-semibold">
+                        Flight Date <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-stone-50 border-stone-300 text-stone-500"><i class="bi bi-calendar-event"></i></span>
+                        <input type="date" class="form-control bg-white border-stone-300 text-stone-900 font-mono" id="flightDateInput" name="date" value="2024-06-15" min="2023-01-01" max="2024-12-31" required>
+                    </div>
+                    <div class="form-text text-stone-400 fs-8">Covered: 2023 &amp; 2024 Operations</div>
+                </div>
+
+                <!-- Flight Number -->
+                <div class="col-12 col-md-3">
+                    <label for="flightNumberInput" class="form-label text-stone-700 fs-7 fw-semibold">
+                        Flight Number <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-stone-50 border-stone-300 text-stone-500"><i class="bi bi-hash"></i></span>
+                        <input type="text" class="form-control bg-white border-stone-300 text-stone-900 font-mono" id="flightNumberInput" name="flight_number" placeholder="e.g. 2166, 883, or 3294" required>
+                    </div>
+                    <div class="form-text text-stone-400 fs-8">Numeric carrier flight number</div>
+                </div>
+
+                <!-- Optional Airline Filter -->
+                <div class="col-12 col-md-3">
+                    <label for="airlineSelect" class="form-label text-stone-700 fs-7 fw-medium">
+                        Airline <span class="text-stone-400 fs-8">(Optional)</span>
+                    </label>
+                    <select class="form-select bg-white border-stone-300 text-stone-900" id="airlineSelect" name="airline">
+                        <option value="">All Airlines (Auto-detect)</option>
+                        {% for code, name in airlines.items() %}
+                        <option value="{{ code }}">{{ name }} ({{ code }})</option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text text-stone-400 fs-8">Helps disambiguate shared numbers</div>
+                </div>
+
+                <!-- Optional Origin Airport Filter -->
+                <div class="col-12 col-md-3">
+                    <label for="originSelect" class="form-label text-stone-700 fs-7 fw-medium">
+                        Origin Hub <span class="text-stone-400 fs-8">(Optional)</span>
+                    </label>
+                    <select class="form-select bg-white border-stone-300 text-stone-900" id="originSelect" name="origin">
+                        <option value="">All Origin Hubs</option>
+                        {% for code, info in airports.items() %}
+                        <option value="{{ code }}">{{ code }} - {{ info.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text text-stone-400 fs-8">Filter by departure airport</div>
+                </div>
+
+                <!-- Model Choice and Action Buttons Row -->
+                <div class="col-12 pt-3 border-top border-stone-200 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                    <!-- ML Model Selection Segmented Pill -->
+                    <div class="d-flex align-items-center gap-2" id="modelSelectionContainer">
+                        <span class="fs-7 text-stone-500 fw-medium">Trained Model:</span>
+                        <div class="segmented-control" role="group" aria-label="Model selection">
+                            <input type="radio" class="segmented-check" name="modelChoice" id="modelHGB" value="Gradient boosting" checked>
+                            <label class="segmented-btn seg-model-gb" for="modelHGB">
+                                <span class="seg-pip seg-pip-gb"></span>
+                                <span>Gradient Boosting</span>
+                                <span class="seg-mini-badge bg-emerald-50 text-emerald-700 border border-emerald-200">Best (0.823 PR)</span>
+                            </label>
+
+                            <input type="radio" class="segmented-check" name="modelChoice" id="modelLR" value="Logistic regression">
+                            <label class="segmented-btn seg-model-lr" for="modelLR">
+                                <span class="seg-pip seg-pip-lr"></span>
+                                <span>Logistic Regression</span>
+                                <span class="seg-mini-badge bg-stone-100 text-stone-600 border border-stone-200">Baseline</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons (Honey Gold Pill CTA) -->
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-stone-pill px-3 py-2" id="clearSearchBtn">
+                            <i class="bi bi-x-circle me-1"></i> Clear
+                        </button>
+                        <button type="submit" class="btn btn-amber-pill px-4 py-2 fw-semibold shadow-xs" id="searchSubmitBtn">
+                            <span class="spinner-border spinner-border-sm me-1 d-none" id="searchSpinner" role="status" aria-hidden="true"></span>
+                            <span id="searchBtnText"><i class="bi bi-search me-1"></i> Search &amp; Predict</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Animation Placeholder -->
+    <div id="searchLoadingCard" class="card bg-white border border-stone-200 rounded-3 p-5 text-center d-none shadow-xs mb-4">
+        <div class="radar-scan-box mx-auto mb-3">
+            <div class="radar-circle"></div>
+            <div class="radar-sweep"></div>
+            <i class="bi bi-airplane-fill text-stone-700 radar-plane"></i>
+        </div>
+        <h3 class="h5 font-serif fw-semibold text-stone-900 mb-1">Searching Operations Database...</h3>
+        <p class="text-stone-500 fs-7 mb-0">Retrieving departure delay, weather observation, and running ML inference pipeline.</p>
+    </div>
+
+    <!-- Multiple Matches Selection Card (Shown when >1 flight matches) -->
+    <div id="multipleMatchesCard" class="card bg-white border border-amber-200 rounded-3 shadow-xs mb-4 d-none">
+        <div class="card-header bg-amber-50 border-bottom border-amber-200 py-3 d-flex justify-content-between align-items-center">
+            <h2 class="h6 font-serif fw-bold text-amber-900 mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-exclamation-triangle-fill text-amber-600"></i> Multiple Flights Match Your Query
+            </h2>
+            <span class="badge bg-amber-100 text-amber-800 border border-amber-300" id="matchesCountBadge">0 Matches</span>
+        </div>
+        <div class="card-body p-3">
+            <p class="text-stone-600 fs-7 mb-3">
+                Multiple flights share this flight number on the selected date. Please click on the specific flight leg below to view information and run delay prediction:
+            </p>
+            <div class="list-group list-group-flush gap-2" id="multipleMatchesList">
+                <!-- Dynamic match items rendered via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Flight Information & Prediction Results View (Dynamically populated) -->
+    <div id="predictionResultsContainer" class="d-none">
+        
+        <!-- Dataset Split Status Alert Banner (Detects Train, Validation, or Test) -->
+        <div id="displaySplitBanner" class="alert d-flex flex-column flex-md-row align-items-md-center justify-content-between p-3 rounded-3 mb-4 shadow-xs border" role="alert">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fs-2 bi" id="displaySplitIcon"></i>
+                <div>
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                        <span class="badge font-mono fs-8" id="displaySplitBadge">DATASET SPLIT</span>
+                        <strong class="fs-6 text-stone-900 font-serif" id="displaySplitTitle">Dataset Split Detected</strong>
+                        <span class="badge bg-white text-stone-600 border border-stone-200 font-mono fs-8" id="displaySplitPeriod">Jan 1 – Sep 30, 2023</span>
+                    </div>
+                    <div class="fs-7 text-stone-600" id="displaySplitDesc">
+                        Split information description here.
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 mt-md-0 text-md-end" id="displaySplitActionNote">
+                <span class="badge bg-white border border-stone-300 font-mono text-stone-700 px-3 py-2 fs-8">Dataset Status</span>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <!-- Left Column: Flight Details Card -->
+            <div class="col-12 col-xl-7">
+                <div class="card bg-white border border-stone-200 rounded-3 shadow-xs h-100">
+                    <!-- Flight Header with Route Banner -->
+                    <div class="card-header bg-white border-bottom border-stone-100 p-4">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="badge bg-stone-100 text-stone-800 border border-stone-300 font-mono fs-7" id="displayAirlineCode">AA</span>
+                                    <span class="h4 font-serif fw-bold text-stone-900 mb-0" id="displayFlightHeader">Flight #1562</span>
+                                </div>
+                                <div class="text-stone-500 fs-7" id="displayAirlineFullName">American Airlines</div>
+                            </div>
+                            <div class="text-md-end">
+                                <div class="fs-8 text-stone-400 text-uppercase tracking-wider">Flight Date</div>
+                                <div class="font-mono text-stone-900 fw-bold fs-6" id="displayFlightDate">2023-01-01</div>
+                            </div>
+                        </div>
+
+                        <!-- Route Visualizer (Origin ──✈── Destination) -->
+                        <div class="route-visualizer-box bg-stone-50 border border-stone-200 rounded-3 p-3 mt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Origin Node -->
+                                <div class="text-start">
+                                    <div class="font-mono fw-bold text-stone-900 fs-3" id="displayOriginCode">PHX</div>
+                                    <div class="fs-7 text-stone-800 fw-semibold" id="displayOriginCity">Phoenix, AZ</div>
+                                    <div class="fs-8 text-stone-500" id="displayOriginAirportName">Phoenix Sky Harbor</div>
+                                </div>
+
+                                <!-- Plane Line Indicator -->
+                                <div class="route-path-container flex-grow-1 mx-3 text-center position-relative">
+                                    <div class="route-flight-line"></div>
+                                    <div class="route-plane-icon">
+                                        <i class="bi bi-airplane-fill text-stone-700"></i>
+                                    </div>
+                                    <span class="badge bg-white text-stone-600 border border-stone-200 font-mono fs-8 mt-4" id="displayDurationDist">
+                                        2h 18m &bull; 1,587 mi
+                                    </span>
+                                </div>
+
+                                <!-- Destination Node -->
+                                <div class="text-end">
+                                    <div class="font-mono fw-bold text-stone-900 fs-3" id="displayDestCode">ATL</div>
+                                    <div class="fs-7 text-stone-800 fw-semibold" id="displayDestCity">Atlanta, GA</div>
+                                    <div class="fs-8 text-stone-500" id="displayDestAirportName">Hartsfield-Jackson Intl</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule & Timing Breakdown -->
+                    <div class="card-body p-4">
+                        <h3 class="h6 font-serif fw-bold text-stone-900 mb-3 d-flex align-items-center gap-2">
+                            <i class="bi bi-clock-fill text-stone-400"></i> Flight Departure &amp; Schedule
+                        </h3>
+                        <div class="row g-3 mb-4">
+                            <div class="col-6 col-sm-3">
+                                <div class="p-2 rounded-2 bg-stone-50 border border-stone-200">
+                                    <div class="fs-8 text-stone-500">Scheduled Departure</div>
+                                    <div class="font-mono fw-bold text-stone-900 fs-6 mt-1" id="displaySchedDep">12:51 AM</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-3">
+                                <div class="p-2 rounded-2 bg-stone-50 border border-stone-200">
+                                    <div class="fs-8 text-stone-500">Actual Departure</div>
+                                    <div class="font-mono fw-bold text-stone-900 fs-6 mt-1" id="displayActualDep">01:08 AM</div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-3">
+                                <div class="p-2 rounded-2 bg-stone-50 border border-stone-200">
+                                    <div class="fs-8 text-stone-500">Departure Delay</div>
+                                    <div class="mt-1">
+                                        <span class="badge font-mono fs-7" id="displayDepDelayBadge">+17 min Late</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-3">
+                                <div class="p-2 rounded-2 bg-stone-50 border border-stone-200">
+                                    <div class="fs-8 text-stone-500">Scheduled Arrival</div>
+                                    <div class="font-mono fw-bold text-stone-900 fs-6 mt-1" id="displaySchedArr">06:29 AM</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weather & Aircraft Rotation Grid -->
+                        <div class="row g-3">
+                            <!-- Origin Weather -->
+                            <div class="col-12 col-md-6">
+                                <div class="p-3 rounded-2 bg-stone-50 border border-stone-200 h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="fs-7 fw-bold text-stone-800">
+                                            <i class="bi bi-cloud-sun text-stone-500 me-1"></i> Origin Weather (METAR)
+                                        </span>
+                                        <span class="badge bg-white text-stone-600 border border-stone-200 fs-8 font-mono">2h Pre-Dep</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2 fs-7 text-stone-700">
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-thermometer-half text-stone-400"></i>
+                                            <span>Temp: <strong class="text-stone-900 font-mono" id="displayWeatherTemp">57°F</strong></span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-wind text-stone-400"></i>
+                                            <span>Wind: <strong class="text-stone-900 font-mono" id="displayWeatherWind">4 kt</strong></span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <i class="bi bi-eye text-stone-400"></i>
+                                            <span>Vis: <strong class="text-stone-900 font-mono" id="displayWeatherVis">8 mi</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="fs-8 text-stone-500 mt-2">
+                                        Sky Cover: <strong class="text-stone-800" id="displayWeatherSky">OVC (Overcast)</strong> &bull; 
+                                        Conditions: <span class="badge bg-white border border-stone-200 text-stone-700" id="displayWeatherConditions">Fair / Clear</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Aircraft Rotation -->
+                            <div class="col-12 col-md-6">
+                                <div class="p-3 rounded-2 bg-stone-50 border border-stone-200 h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="fs-7 fw-bold text-stone-800">
+                                            <i class="bi bi-arrow-repeat text-stone-500 me-1"></i> Aircraft Rotation (Tail)
+                                        </span>
+                                        <span class="badge bg-white text-stone-700 border border-stone-200 font-mono fs-8" id="displayTailNum">N910WN</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-3 fs-7 text-stone-700">
+                                        <div>
+                                            <span class="text-stone-500 fs-8 d-block">Leg of the Day:</span>
+                                            <strong class="text-stone-900 font-mono" id="displayTailLeg">Leg #2</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-stone-500 fs-8 d-block">Previous Leg Delay:</span>
+                                            <strong class="text-stone-900 font-mono" id="displayPrevArrDelay">-19 min</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-stone-500 fs-8 d-block">Turnaround Time:</span>
+                                            <strong class="text-stone-900 font-mono" id="displaySchedTurn">56 min</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Historical Ground Truth Box with Model Memory Indicator -->
+                        <div class="alert bg-stone-50 border border-stone-200 text-stone-700 mt-3 mb-0 p-3 rounded-2 fs-7" id="historicalGroundTruthBox">
+                            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+                                <div>
+                                    <span class="badge font-mono me-2" id="displayGroundTruthBadge">Known Ground-Truth Answer</span>
+                                    <span id="displayGroundTruthLabel">Actual Arrival Outcome:</span>
+                                </div>
+                                <span class="badge fs-7 font-mono" id="displayActualArrivalOutcome">Delayed (+15m)</span>
+                            </div>
+                            <div class="fs-8 text-stone-500 mt-2" id="displayGroundTruthNote">
+                                Ground truth note explaining whether this flight was in training (answer known) or held-out test (out-of-sample prediction).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: ML Prediction Result Card -->
+            <div class="col-12 col-xl-5">
+                <div class="card bg-white border border-stone-200 rounded-3 shadow-xs h-100 d-flex flex-column">
+                    <div class="card-header bg-white border-bottom border-stone-100 py-3 d-flex justify-content-between align-items-center">
+                        <h2 class="h6 font-serif fw-bold text-stone-900 mb-0 d-flex align-items-center gap-2">
+                            <i class="bi bi-speedometer text-stone-400"></i> <span id="displayPredictionCardTitle">Arrival Delay Classification</span>
+                        </h2>
+                        <span class="badge bg-stone-100 text-stone-700 border border-stone-200 font-mono fs-8" id="displayActiveModelBadge">Gradient Boosting</span>
+                    </div>
+
+                    <div class="card-body p-4 d-flex flex-column justify-content-between">
+                        <!-- Primary Decision Status Alert -->
+                        <div class="prediction-status-card p-4 rounded-3 text-center mb-4 border" id="predictionStatusCard">
+                            <div class="fs-8 text-uppercase tracking-wider fw-semibold mb-1" id="predictionPreTitle">Inference Result</div>
+                            <div class="h2 font-serif fw-bold mb-1 tracking-tight" id="predictionStatusText">DELAY LIKELY</div>
+                            <div class="fs-7" id="predictionStatusSubtitle">Arrival delay is expected to meet or exceed 15 minutes.</div>
+                        </div>
+
+                        <!-- Probability Gauge / Meter -->
+                        <div class="probability-meter-box bg-stone-50 border border-stone-200 rounded-3 p-3 mb-4">
+                            <div class="d-flex justify-content-between align-items-end mb-2">
+                                <span class="text-stone-700 fs-7 fw-semibold font-serif">Predicted Delay Probability:</span>
+                                <span class="font-mono fw-extrabold fs-3 text-stone-900" id="displayProbabilityPercent">79.8%</span>
+                            </div>
+
+                            <!-- Meter Bar with Threshold Pin -->
+                            <div class="position-relative my-2">
+                                <div class="progress bg-stone-200 border border-stone-300" style="height: 12px; border-radius: 9999px;">
+                                    <div class="progress-bar rounded-pill" id="displayProbabilityBar" style="width: 79.8%;"></div>
+                                </div>
+                                <!-- Decision Threshold Marker Pin -->
+                                <div class="threshold-marker-pin" id="thresholdMarkerPin" style="left: 67.2%;" title="Decision Threshold">
+                                    <div class="threshold-line"></div>
+                                    <div class="threshold-label fs-8 font-mono">Thr: <span id="displayThresholdLabel">67.2%</span></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between text-stone-500 fs-8 font-mono mt-3">
+                                <span>0% (On Time)</span>
+                                <span class="text-stone-700">Threshold: <span id="displayThresholdSubtext">67.2%</span></span>
+                                <span>100% (Delayed)</span>
+                            </div>
+                        </div>
+
+                        <!-- Operational Recommendation for Airport Staff -->
+                        <div class="recommendation-box p-3 rounded-2 bg-stone-50 border border-stone-200 mb-4">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-shield-check text-stone-600"></i>
+                                <span class="fs-7 fw-bold text-stone-900 font-serif">Airport Operations Recommendation:</span>
+                            </div>
+                            <p class="fs-7 text-stone-600 mb-0" id="displayRecommendationText">
+                                High probability of 15+ min arrival delay. Alert destination ground handling, review gate buffer times, and notify connecting baggage teams.
+                            </p>
+                        </div>
+
+                        <!-- Timing & Model Info Footer -->
+                        <div class="border-top border-stone-200 pt-3 text-stone-500 fs-8">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Prediction Timing:</span>
+                                <strong class="text-stone-800" id="displayPredictionTiming">Post-Departure (Known Departure Delay)</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Classification Threshold:</span>
+                                <span class="font-mono text-stone-700" id="displayThresholdVal">0.6721</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Prediction Timestamp:</span>
+                                <span class="font-mono text-stone-700" id="displayTimestampVal">2026-10-30 22:30 UTC</span>
+                            </div>
+                            <div class="alert bg-stone-100 border border-stone-200 p-2 mb-0 rounded-2 text-stone-500 fs-8">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Disclaimer: Prediction is an empirical machine-learning estimate based on historical patterns. It is not an exact flight track guarantee.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - AeroDelay Ops</title>
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+    <!-- Google Fonts: Newsreader (Editorial Serif), Inter (Sans), JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=5.3.0">
+</head>
+<body class="bg-cream text-charcoal min-vh-100 d-flex flex-column">
+
+    <!-- Top Navigation Bar (Editorial Minimalist) -->
+    <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom border-stone-200 sticky-top px-3 py-2">
+        <div class="container-fluid">
+            <!-- Brand Logo -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('index') }}">
+                <div class="brand-emblem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#18181b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                        <path d="M2 12h20"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="brand-title font-serif">AeroDelay <span class="text-amber-accent">Ops</span></span>
+                </div>
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler border-stone-300" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-lg-1">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill {{ 'active' if active_page == 'predict' else '' }}" href="{{ url_for('predict_page') }}">
+                            <i class="bi bi-airplane-engines me-1"></i> Flight Prediction
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill {{ 'active' if active_page == 'performance' else '' }}" href="{{ url_for('performance') }}">
+                            <i class="bi bi-graph-up me-1"></i> Model Benchmark &amp; Interactions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 rounded-pill {{ 'active' if active_page == 'about' else '' }}" href="{{ url_for('about') }}">
+                            <i class="bi bi-file-earmark-text me-1"></i> Project Reasoning &amp; Methodology
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Right System Status Badges -->
+                <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                    <div class="status-pill d-none d-md-flex align-items-center gap-2 bg-stone-50 border border-stone-200 px-3 py-1 rounded-pill">
+                        <span class="status-dot-amber"></span>
+                        <span class="fs-7 text-stone-600 font-mono">Dual-Stage ML Active</span>
+                    </div>
+                    <div class="status-pill d-none d-xl-flex align-items-center gap-2 bg-stone-50 border border-stone-200 px-3 py-1 rounded-pill">
+                        <span class="fs-7 text-stone-500 font-mono">952k Corpus &bull; BTS 2023–24</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow-1 py-4">
+        <div class="container-fluid px-3 px-lg-4">
+            {% block content %}
+            {% if error_message %}
+            <div class="alert alert-danger bg-rose-50 border-rose-200 text-rose-800 my-4 p-4 rounded-3 text-center">
+                <i class="bi bi-exclamation-triangle-fill fs-2 text-rose-600 mb-2 d-block"></i>
+                <h4 class="fw-bold">{{ error_message }}</h4>
+                <a href="{{ url_for('predict_page') }}" class="btn btn-outline-dark mt-3">Return to Prediction</a>
+            </div>
+            {% endif %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Toast Notification Container for Async Feedback -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="appToast" class="toast bg-white text-stone-900 border border-stone-200 shadow-md" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-stone-50 text-stone-900 border-bottom border-stone-200">
+                <i class="bi bi-info-circle-fill text-amber me-2" id="toastIcon"></i>
+                <strong class="me-auto font-serif" id="toastTitle">Notification</strong>
+                <small class="text-stone-400">Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-stone-700 fs-7" id="toastBody">
+                Message content
+            </div>
+        </div>
+    </div>
+
+    <!-- Aviation Operations Footer -->
+    <footer class="footer bg-white border-top border-stone-200 py-3 mt-auto text-stone-500 fs-7">
+        <div class="container-fluid px-3 px-lg-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-stone-900 fw-semibold font-serif">AeroDelay Ops</span> &bull; 
+                <span class="text-stone-500">Commercial Aviation Delay Decision Support System</span>
+            </div>
+            <div class="text-center text-md-end">
+                <span class="badge bg-stone-100 border border-stone-200 text-stone-700 me-1">Dual-Stage Delay Inference</span>
+                <span class="text-stone-500">BTS 2023–2024 &bull; Arrival &amp; Departure Models &ge; 15 min</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Application JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}?v=5.3.0"></script>
+</body>
+</html>
