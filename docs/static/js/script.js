@@ -4,6 +4,18 @@ window.PRESET_FLIGHTS_CACHE = {"2024-06-11_2269": {"search_result": {"status": "
  * Frontend JavaScript: Asynchronous API communication, Chart.js graphs, UI state.
  */
 
+// Universal global helpers accessible anywhere
+window.setText = function(id, text) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text !== undefined && text !== null ? text : 'N/A';
+};
+const setText = window.setText;
+
+window.loggerError = function(msg, err) {
+    console.error(`[AeroDelay Ops] ${msg}:`, err);
+};
+const loggerError = window.loggerError;
+
 document.addEventListener('DOMContentLoaded', function () {
     // Current loaded flight cache for instant model re-evaluation
     let currentRawFlightRecord = null;
