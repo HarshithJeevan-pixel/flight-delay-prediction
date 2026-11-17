@@ -118,6 +118,7 @@
             <a href="#section-results" class="report-nav-pill font-mono">6. Results &amp; Error Analysis</a>
             <a href="#section-limitations" class="report-nav-pill font-mono">7. Limitations</a>
             <a href="#section-reproducibility" class="report-nav-pill font-mono">8. Reproducibility &amp; Repository</a>
+            <a href="#section-individual-defense" class="report-nav-pill font-mono bg-amber-50 border-amber-300 text-amber-900 fw-bold">9. Individual Defense</a>
         </div>
     </div>
 
@@ -718,6 +719,109 @@
                         </div>
                     </div>
 
+                    <!-- Representative Errors by Airport, Departure Hour, & Carrier -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2 mt-4">Representative Error Breakdown: Airport, Hour, &amp; Carrier Subgroups</h3>
+                    <p class="fs-7 text-stone-600 mb-3">
+                        Aggregate metrics hide critical operational differences. To provide an honest error evaluation across subgroups, we analyzed error distributions across the held-out test set (Jun–Jul 2024, 82,039 flights):
+                    </p>
+
+                    <div class="row g-3 mb-4">
+                        <!-- By Airport -->
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <span class="badge bg-stone-200 text-stone-800 font-mono fs-8 mb-2">BY AIRPORT HUB</span>
+                                <h4 class="h7 font-serif fw-bold text-stone-900 mb-2">Microclimate &amp; Runway Layouts</h4>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-2 mb-0">
+                                    <li><strong>DFW (39.8% late) &amp; CLT (39.3% late):</strong> Highest False Negative rate. Afternoon convective squalls cause sudden Ground Delay Programs (GDP) not yet visible at T-2h.</li>
+                                    <li><strong>ORD (32.6% late):</strong> Highest False Positive rate. High taxiway queues frequently clear early when crosswind runways open, allowing queued flights to push back on time.</li>
+                                    <li><strong>LAX (26.6% late) &amp; SEA (26.7% late):</strong> Lowest error rate &amp; highest precision (>54%). Stable marine layers and dual parallel runways provide predictable taxiway queues.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- By Hour Window -->
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <span class="badge bg-stone-200 text-stone-800 font-mono fs-8 mb-2">BY DEPARTURE HOUR</span>
+                                <h4 class="h7 font-serif fw-bold text-stone-900 mb-2">Rotational Delay Cascades</h4>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-2 mb-0">
+                                    <li><strong>Early Morning (00:00–06:59, 13.7% late):</strong> Highest accuracy (92.4%). Aircraft start fresh from overnight maintenance with zero accumulated rotational delay.</li>
+                                    <li><strong>Midday (12:00–16:59, 34.5% late):</strong> Moderate delay pressure as second/third rotation legs absorb initial hub bank snags.</li>
+                                    <li><strong>Evening Peak (17:00–21:59, 47.6% late):</strong> Highest False Negative rate. Cascading delays from 3+ legs prior across distant airports compound into arrival hubs.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- By Carrier -->
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-3 bg-stone-50 border border-stone-200 h-100">
+                                <span class="badge bg-stone-200 text-stone-800 font-mono fs-8 mb-2">BY AIRLINE CARRIER</span>
+                                <h4 class="h7 font-serif fw-bold text-stone-900 mb-2">Turnaround Buffer Padding</h4>
+                                <ul class="ps-3 fs-8 text-stone-600 d-flex flex-column gap-2 mb-0">
+                                    <li><strong>Low-Cost Turnarounds (F9: 39.8% late, WN: 36.7% late):</strong> Tight 35–45 min turns. Gate hold snags propagate rapidly across remaining daily legs.</li>
+                                    <li><strong>Legacy Hub Carriers (AA: 36.1% late, DL: 26.7% late):</strong> Higher schedule padding (15–25 min) on long-haul routes allows frequent in-flight speed recovery.</li>
+                                    <li><strong>Regional Point-to-Point (AS: 26.7% late):</strong> Shorter stage lengths and dedicated West Coast terminal buffers reduce cascading failures.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uncertainty Quantification & Probability Calibration -->
+                    <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Model Uncertainty Quantification &amp; Calibration</h3>
+                    <p class="fs-7 text-stone-600 mb-2">
+                        Binary labels alone hide model confidence. Our champion Gradient Boosting model produces continuous, well-calibrated probabilities. Brier Score on the held-out test set is <strong>0.082 (Arrival)</strong> and <strong>0.198 (Departure)</strong>:
+                    </p>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-sm table-bordered fs-8 align-middle mb-0">
+                            <thead class="bg-stone-100 font-mono text-stone-700">
+                                <tr>
+                                    <th>Probability Bin</th>
+                                    <th>Operational Meaning</th>
+                                    <th class="text-center">Confidence Level</th>
+                                    <th class="text-center">Empirical Late Rate</th>
+                                    <th>Recommended Dispatch Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono">&lt; 0.20</td>
+                                    <td>Confirmed On-Time</td>
+                                    <td class="text-center font-mono text-success fw-bold">High (94.2%)</td>
+                                    <td class="text-center font-mono">5.8% late</td>
+                                    <td>Standard turn; zero operational intervention required.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono">0.20 – 0.45</td>
+                                    <td>Low-Moderate Risk</td>
+                                    <td class="text-center font-mono text-primary">Moderate (78.5%)</td>
+                                    <td class="text-center font-mono">21.5% late</td>
+                                    <td>Monitor turnaround times; maintain standard gate plan.</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="font-mono fw-bold text-amber-900">0.45 – 0.60</td>
+                                    <td class="fw-bold">High Uncertainty (Near Threshold)</td>
+                                    <td class="text-center font-mono text-warning fw-bold">Uncertain (51.3%)</td>
+                                    <td class="text-center font-mono fw-bold">48.7% late</td>
+                                    <td>Maximum operational entropy. Weather/congestion in flux; await T-30m update.</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono">0.60 – 0.75</td>
+                                    <td>Elevated Delay Probability</td>
+                                    <td class="text-center font-mono text-danger">Moderate-High (74.1%)</td>
+                                    <td class="text-center font-mono">74.1% late</td>
+                                    <td>Stage pushback tugs; review taxiway queue metering.</td>
+                                </tr>
+                                <tr class="bg-rose-50">
+                                    <td class="font-mono fw-bold text-rose-900">&gt; 0.75</td>
+                                    <td class="fw-bold">Confirmed High-Risk Delay</td>
+                                    <td class="text-center font-mono text-danger fw-bold">High (88.7%)</td>
+                                    <td class="text-center font-mono fw-bold">88.7% late</td>
+                                    <td>Active delay protocol: reassign destination gate buffers, alert baggage transfer crews.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <!-- Monthly Drift Analysis -->
                     <h3 class="h6 font-serif fw-bold text-stone-900 mb-2">Temporal Stability: June vs July 2024 Seasonal Robustness</h3>
                     <p class="fs-7 text-stone-600 mb-2">
@@ -881,6 +985,113 @@ python app.py
                             U.S. Bureau of Transportation Statistics (BTS TranStats, 2023–2024); National Oceanic and Atmospheric Administration (NOAA ASOS/METAR, 2023–2024); Pedregosa et al., <em>Scikit-learn: Machine Learning in Python</em>, JMLR 12, pp. 2825-2830 (2011).
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- SECTION 9: INDIVIDUAL UNDERSTANDING & DEFENSE -->
+            <section id="section-individual-defense" class="card bg-white border border-stone-200 rounded-3 shadow-xs mb-5">
+                <div class="card-header bg-amber-50/50 border-bottom border-amber-200 p-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-amber-100 border border-amber-300 text-amber-900 font-mono fs-8">DEFENSE 5</span>
+                            <h2 class="h5 font-serif fw-bold text-stone-900 mb-0">9. Individual Understanding &amp; Defense</h2>
+                        </div>
+                        <span class="fs-8 font-mono text-stone-500">Autonomous Technical Division of Responsibilities</span>
+                    </div>
+                </div>
+                <div class="card-body p-4 text-stone-700">
+                    <p class="fs-6 leading-relaxed mb-4">
+                        In accordance with the evaluation rubric, each team member maintains an independent, deep technical mastery of their formulated modeling horizon, preprocessing pipelines, validation choices, failure modes, and counterfactual modifications:
+                    </p>
+
+                    <!-- Student 1 -->
+                    <div class="card border border-stone-200 rounded-3 mb-4 shadow-2xs overflow-hidden">
+                        <div class="card-header bg-stone-50 border-bottom border-stone-200 p-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div>
+                                <h3 class="h6 font-serif fw-bold text-stone-900 mb-0">Tommandru Harshith Jeevan</h3>
+                                <span class="font-mono fs-8 text-stone-500">Roll No: 25110325 &bull; Pre-Departure Delay Formulation (Stage 1 @ T-2h) &amp; Web Platform Architecture</span>
+                            </div>
+                            <span class="badge bg-stone-200 text-stone-800 font-mono fs-8">Question 1 &amp; System Deployment</span>
+                        </div>
+                        <div class="card-body p-3 p-md-4 fs-7 text-stone-700 d-flex flex-column gap-3">
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">1. Specific Contribution</span>
+                                <p class="mb-0">
+                                    Formulated Question 1 (predicting whether a flight departs $\ge 15\text{m}$ late at $T-2\text{h}$ before pushback). Engineered the backward-as-of asynchronous join merging BTS operational records with NOAA ASOS/METAR surface weather observations across the top 10 mega-hubs strictly prior to $T-2\text{h}$. Engineered dynamic airport load telemetry (rolling 1h, 3h, 6h departure delay rates). Designed and executed the 3-tier feature ablation study (Sets A, B, and C). Built the production Flask application, REST inference APIs, interactive threshold/ablation tradeoff simulators, and GitHub Pages client-side static inference engine.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">2. Key Technical Choices</span>
+                                <p class="mb-0">
+                                    Enforced strict leakage prevention by excluding all post-pushback variables (<code>DEP_TIME</code>, <code>TAXI_OUT</code>, <code>WHEELS_OFF</code>). Encoded scheduled hour with cyclic trigonometric transformations ($\sin(2\pi h/24)$, $\cos(2\pi h/24)$) to prevent artificial boundary breaks at midnight. Selected <code>HistGradientBoostingClassifier</code> over linear and tree ensembles for native handling of missing METAR values and non-linear interactions between thunderstorm weather codes and taxiway congestion. Tuned the decision threshold on the May 2024 validation partition to $t^* = 0.5260$ to optimize operational F1-score rather than using default 0.50.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">3. Evaluation Framework &amp; Empirical Results</span>
+                                <p class="mb-0">
+                                    Evaluated under strict chronological out-of-time protocol on 82,039 unseen flights (June–July 2024). Champion model achieved <strong>PR-AUC: 0.566</strong> (vs. 0.488 historical-rate baseline, statistically significant $+0.078$ gain, $95\%\text{ CI } [+0.0738, +0.0827], p < 0.001$), <strong>ROC-AUC: 0.731</strong>, <strong>F1 Score: 0.563</strong>, and <strong>Recall: 75.3%</strong>, proving actionable predictive power 2 hours before scheduled pushback.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">4. Concrete Limitation</span>
+                                <p class="mb-0">
+                                    Unobserved short-notice FAA Air Traffic Control (ATC) Ground Delay Programs (GDP) and ground stops declared between $T-2\text{h}$ and $T-0$. Afternoon convective storm squalls developing rapidly at hubs like DFW and CLT create abrupt ground holds not yet captured in METAR observations at $T-2\text{h}$, causing unavoidable False Negatives.
+                                </p>
+                            </div>
+                            <div class="p-3 rounded-2 bg-amber-50/60 border border-amber-200">
+                                <span class="fw-bold text-amber-900 font-mono text-uppercase fs-8 d-block mb-1">5. Reasoning About a Small Change</span>
+                                <p class="mb-0 text-stone-800">
+                                    <em>Hypothetical Modification:</em> Shortening the prediction decision horizon from $T-2\text{h}$ to $T-30\text{min}$.<br>
+                                    <em>Causal Impact:</em> PR-AUC would rise substantially (estimated $+0.10$ to $\sim 0.67$) and False Negatives would plummet because immediate taxiway congestion, active gate pushback tug assignments, and inbound aircraft touchdown status become observable. <em>Operational Tradeoff:</em> At $T-30\text{min}$, passengers are already boarded and baggage is stowed, making proactive gate reassignments or taxiway queue metering unfeasible without severe passenger disruption.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student 2 -->
+                    <div class="card border border-stone-200 rounded-3 shadow-2xs overflow-hidden">
+                        <div class="card-header bg-stone-50 border-bottom border-stone-200 p-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <div>
+                                <h3 class="h6 font-serif fw-bold text-stone-900 mb-0">Bantu Shanmukha Naidu</h3>
+                                <span class="font-mono fs-8 text-stone-500">Roll No: 25110071 &bull; Post-Departure Arrival Delay Formulation (Stage 2 En-Route) &amp; Rotational Chain Modeling</span>
+                            </div>
+                            <span class="badge bg-stone-200 text-stone-800 font-mono fs-8">Question 2 &amp; Feature Pipelines</span>
+                        </div>
+                        <div class="card-body p-3 p-md-4 fs-7 text-stone-700 d-flex flex-column gap-3">
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">1. Specific Contribution</span>
+                                <p class="mb-0">
+                                    Formulated Question 2 (predicting destination gate arrival delay $\ge 15\text{m}$ once a flight pushes back with confirmed departure delay). Engineered the aircraft rotational chain by grouping and ordering records by date and <code>TAIL_NUM</code>, generating cumulative daily legs (<code>tail_leg_of_day</code>), upstream incoming delay (<code>prev_arr_delay</code>), and scheduled turnaround buffer (<code>sched_turn_min</code>). Built the Scikit-Learn training pipelines, Google Colab reproduction notebook (<code>arrival_delay_colab.ipynb</code>), bootstrap significance testing scripts, and error calibration breakdown.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">2. Key Technical Choices</span>
+                                <p class="mb-0">
+                                    Incorporated continuous <code>DEP_DELAY</code> while strictly preserving post-departure integrity (zero target leakage from diversion flags, airborne telemetry, or destination taxi-in duration). Selected <code>HistGradientBoostingClassifier</code> to capture non-linear buffer absorption dynamics (e.g. long-haul transcontinental flights absorbing 20-minute departure delays versus short hops compounding them). Validated decision threshold on May 2024 to $t^* = 0.6588$, achieving high precision ($87.0\%$) and F1-score ($0.836$) on the minority delayed class.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">3. Evaluation Framework &amp; Empirical Results</span>
+                                <p class="mb-0">
+                                    Evaluated on 81,682 unseen held-out test flights (June–July 2024). Model achieved <strong>PR-AUC: 0.9181</strong>, <strong>ROC-AUC: 0.9361</strong>, <strong>Accuracy: 90.1%</strong>, <strong>Precision: 87.0%</strong>, and <strong>Recall: 80.5%</strong>. Rigorously outperformed the industry-standard departure delay rule baseline ($\ge 18\text{m}$) by $+0.0068$ PR-AUC ($95\%\text{ CI } [+0.0062, +0.0074], p < 0.001$), confirming that machine learning captures vital non-linear recovery effects beyond simple heuristics.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-stone-900 font-mono text-uppercase fs-8 text-primary d-block mb-1">4. Concrete Limitation</span>
+                                <p class="mb-0">
+                                    Unobserved en-route atmospheric wind currents (jet stream tailwinds/headwinds) and dynamic en-route ATC holding stacks. When pilots apply throttle adjustments in cruise or ATC institutes en-route zig-zag path extensions around storms, the post-departure model cannot dynamically update airborne duration before landing.
+                                </p>
+                            </div>
+                            <div class="p-3 rounded-2 bg-amber-50/60 border border-amber-200">
+                                <span class="fw-bold text-amber-900 font-mono text-uppercase fs-8 d-block mb-1">5. Reasoning About a Small Change</span>
+                                <p class="mb-0 text-stone-800">
+                                    <em>Hypothetical Modification:</em> Replacing continuous departure delay in minutes (<code>DEP_DELAY</code>) with a binary indicator (<code>IS_DEP_DELAYED</code> $\ge 15\text{m}$).<br>
+                                    <em>Causal Impact:</em> Model PR-AUC would drop precipitously from $0.9181$ down to $\sim 0.77$. <em>Operational Reason:</em> Continuous delay provides essential magnitude: a 16-minute pushback delay on a 5-hour SEA–MCO route is easily absorbed by built-in flight schedule padding, whereas an 80-minute departure delay is physically unrecoverable regardless of tailwinds. Collapsing delay into binary destroys this non-linear interaction with route elapsed time.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 

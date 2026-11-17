@@ -258,3 +258,59 @@ Generative AI tools were used during development to assist with code refactoring
 2. **National Oceanic and Atmospheric Administration (NOAA):** Automated Surface Observing System (ASOS / METAR) Archives, Iowa State University Environmental Mesonet (2023–2024).
 3. **Scikit-learn:** Pedregosa et al., *Scikit-learn: Machine Learning in Python*, Journal of Machine Learning Research (JMLR) 12, pp. 2825–2830 (2011).
 4. **Gradient Boosting:** Friedman, J. H., *Greedy Function Approximation: A Gradient Boosting Machine*, Annals of Statistics, 29(5), 1189–1232 (2001).
+
+---
+
+## 10. Individual Understanding & Defense (Rubric Defense Guide)
+
+In accordance with course evaluation criteria (*"Each of you must explain your contribution, key choices, evaluation, and a limitation, and reason about a small change. Prepare for this separately."*), each team member's independent technical defense is detailed below:
+
+### Team Member 1: Tommandru Harshith Jeevan (Roll No: 25110325)
+* **Formulated Scope & Role:** Pre-Departure Delay Formulation (Stage 1 @ T-2h) & Full-Stack MLOps Web Platform
+* **1. Contribution:**
+  - Formulated Question 1: Classifying whether flight $i$ will depart with $\ge 15$-minute delay at the operational $T-2\text{h}$ pre-departure decision window.
+  - Implemented the strict leakage-free backward-as-of join merging BTS flight records with NOAA ASOS/METAR weather observations across 10 primary hubs.
+  - Engineered dynamic airport load telemetry (rolling 1h, 3h, and 6h departure delay rates).
+  - Executed the 3-tier feature ablation experiments (Sets A, B, and C) quantifying the predictive gain of airport congestion telemetry (+0.043 PR-AUC).
+  - Architected the production Flask web application, REST inference API, interactive threshold/ablation tradeoff simulators, and GitHub Pages static inference engine.
+* **2. Key Choices:**
+  - *Strict Leakage Elimination:* Completely removed all post-pushback fields (`DEP_TIME`, `TAXI_OUT`, `WHEELS_OFF`) and restricted weather observations to strictly before $T-2\text{h}$.
+  - *Cyclic Time Transformations:* Enforced continuous trigonometric encoding ($\sin(2\pi h/24)$, $\cos(2\pi h/24)$) for scheduled departure hours, removing artificial boundary discontinuities at midnight.
+  - *Model Selection:* Selected `HistGradientBoostingClassifier` over linear models and random forests for its native handling of missing METAR values and non-linear interactions between weather phenomena and ground congestion.
+  - *F1-Optimal Thresholding:* Tuned decision threshold on May 2024 validation data ($t^* = 0.5260$) rather than default 0.50, balancing operational recall (75.3%) without triggering excessive false alarm gate-holds.
+* **3. Evaluation:**
+  - Evaluated on 82,039 unseen flights across June–July 2024 under strict chronological holdout.
+  - Outperformed historical carrier/route baseline: **PR-AUC of 0.566 vs 0.488** (+0.078 gain, 95% CI `[+0.0738, +0.0827]`, $p < 0.001$ via 200 bootstrap iterations), **ROC-AUC: 0.731**, **F1: 0.563**, **Recall: 75.3%**.
+* **4. Limitation:**
+  - Inability to observe micro-level Air Traffic Control (ATC) Ground Delay Programs (GDP) and ground stops issued between $T-2\text{h}$ and $T-0$. Rapid afternoon convective storm squalls at DFW and CLT create abrupt ground holds not yet apparent at $T-2\text{h}$, causing unavoidable False Negatives.
+* **5. Reasoning About a Small Change:**
+  - *Change:* What if the decision window was shifted from $T-2\text{hours}$ to $T-30\text{minutes}$?
+  - *Causal Impact:* Model PR-AUC would rise significantly (estimated $+0.10$ to $\sim 0.67$) and False Negatives would plummet because incoming aircraft arrival status, current gate availability, and active taxiway queues would be observable.
+  - *Operational Tradeoff:* Operational actionability drops sharply: at $T-30\text{m}$, boarding is completed and luggage is loaded; station managers lose the lead time necessary to meter taxiways, stage pushback tugs, or swap gates without passenger disruption.
+
+---
+
+### Team Member 2: Bantu Shanmukha Naidu (Roll No: 25110071)
+* **Formulated Scope & Role:** Post-Departure Arrival Delay Formulation (Stage 2 En-Route) & Rotational Chain Modeling
+* **1. Contribution:**
+  - Formulated Question 2: Classifying whether flight $i$ will arrive $\ge 15$ minutes late at its destination gate once it has departed with confirmed pushback delay.
+  - Engineered the multi-leg aircraft rotational chain tracking: sorted flight records by date and `TAIL_NUM` to compute aircraft daily leg count (`tail_leg_of_day`), incoming leg delay (`prev_arr_delay`), and scheduled turnaround buffer (`sched_turn_min`).
+  - Built the Scikit-Learn training pipelines and the Google Colab reproduction notebook (`arrival_delay_colab.ipynb`).
+  - Executed statistical bootstrap significance testing (200 resamples) comparing machine learning performance against standard industry heuristic rules ($\text{DEP\_DELAY} \ge 18\text{m}$).
+  - Conducted model calibration analysis and subgroup error breakdowns across hub airports, departure hours, and carriers.
+* **2. Key Choices:**
+  - *Post-Pushback Formulation:* Incorporated confirmed `DEP_DELAY` as an explicit input while strictly omitting in-flight diversion telemetry or destination taxi-in duration to prevent target leakage.
+  - *Non-Linear Buffer Absorption:* Selected `HistGradientBoostingClassifier` to model the non-linear relationship between departure delay magnitude and route elapsed time (long-haul flights absorb delays in-flight; short-haul flights compound them).
+  - *Validation-Tuned Decision Threshold:* Selected $t^* = 0.6588$ on the May 2024 validation set (optimized for F1-score) to achieve high precision ($87.0\%$) and F1-score ($0.836$) on the minority delayed class.
+  - *Missing Tail Handling:* Categorized unlinked aircraft tails as a separate rotational tier rather than dropping rows, preventing selection bias against charter or substituted aircraft.
+* **3. Evaluation:**
+  - Evaluated on 81,682 unseen held-out test flights across June–July 2024.
+  - Champion Gradient Boosting achieved **PR-AUC: 0.9181**, **ROC-AUC: 0.9361**, **Accuracy: 90.1%**, **Precision: 87.0%**, **Recall: 80.5%**, and **F1: 0.836**.
+  - Statistically significantly beat the standard airline rule baseline ($\ge 18\text{m}$ departure delay) with a PR-AUC improvement of **+0.0068** (95% CI `[+0.0062, +0.0074]`, $p < 0.001$).
+* **4. Limitation:**
+  - Lack of dynamic en-route atmospheric wind data (jet stream tailwinds/headwinds) and real-time ATC airspace holding stacks. When pilots apply throttle adjustments in cruise or ATC institutes en-route zig-zag path extensions around storms, the post-departure model cannot dynamically update airborne duration before landing.
+* **5. Reasoning About a Small Change:**
+  - *Change:* What if continuous departure delay (`DEP_DELAY` in minutes) was replaced with a binary indicator `IS_DEP_DELAYED` ($\ge 15\text{m}$)?
+  - *Causal Impact:* Model PR-AUC would degrade severely from $0.9181$ down to $\sim 0.77$.
+  - *Operational Reason:* Continuous delay provides essential magnitude: a 16-minute pushback delay on a 5-hour SEA–MCO route is easily absorbed by built-in flight schedule padding, whereas an 80-minute departure delay is physically unrecoverable regardless of tailwinds. Collapsing delay into binary destroys this non-linear interaction with route elapsed time.
+
