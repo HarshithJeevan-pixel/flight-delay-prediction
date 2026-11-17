@@ -263,22 +263,26 @@ Generative AI tools were used during development to assist with code refactoring
 
 ## 10. Individual Understanding & Defense (Rubric Defense Guide)
 
-In accordance with course evaluation criteria (*"Each of you must explain your contribution, key choices, evaluation, and a limitation, and reason about a small change. Prepare for this separately."*), each team member's independent technical defense is summarized below (~150 words each):
+In accordance with course evaluation criteria (*"Each of you must explain your contribution, key choices, evaluation, and a limitation, and reason about a small change. Prepare for this separately."*), models and project responsibilities are divided 2-by-2 between team members and summarized below (~150 words each):
 
 ### Team Member 1: Tommandru Harshith Jeevan (Roll No: 25110325)
-* **Contribution:** Led data collection and preprocessing from BTS TranStats (952k flights) and NOAA ASOS/METAR weather stations across 10 hubs using backward-as-of joins. Formulated and trained the Pre-Departure Delay model (Stage 1 @ T-2h) with dynamic hub congestion rates (1h, 3h, 6h) and executed 3-tier feature ablation experiments.
-* **Key Choices:** Enforced zero target leakage by removing post-pushback variables (`DEP_TIME`, `TAXI_OUT`). Encoded departure hour with cyclic trigonometric coordinates and selected `HistGradientBoostingClassifier` for non-linear weather-traffic interactions and missing-value resilience. Tuned validation decision threshold to 0.526 to maximize operational F1.
-* **Evaluation:** Tested on 82,039 held-out flights (Jun–Jul 2024). Outperformed historical baseline with PR-AUC of 0.566 vs 0.488 (+0.078 gain, $p < 0.001$), ROC-AUC of 0.731, and F1 of 0.563.
-* **Limitation:** Blind to rapid convective storms and short-notice ATC ground stops declared between T-2h and pushback.
-* **Counterfactual Change:** Narrowing prediction horizon to T-30m raises PR-AUC to ~0.67, but removes actionable lead time for gate holding and taxiway metering.
+* **Assigned Models:** **Logistic Regression** (Linear Baseline) & **HistGradientBoosting** (Champion Model)
+* **Core Project Responsibilities:** Data Collection & Preprocessing (BTS TranStats + NOAA ASOS/METAR Weather Merging)
+* **Contribution:** Led data collection and ETL merging 952k BTS flight records with NOAA ASOS/METAR surface weather across 10 hubs using leak-free backward-as-of joins. Evaluated two arrival delay models: the linear **Logistic Regression** pipeline and the non-linear **HistGradientBoosting** champion, plus dynamic hub congestion rates.
+* **Key Choices:** Excluded post-pushback variables (`DEP_TIME`, `TAXI_OUT`) to prevent leakage. For Logistic Regression, designed standardized scaling with one-hot encoding; for HistGradientBoosting, leveraged native missing-value handling and histogram binning to capture non-linear weather interactions. Tuned decision threshold to 0.659 on validation data to maximize F1.
+* **Evaluation:** Evaluated on 81,682 unseen flights (Jun–Jul 2024). HistGradientBoosting won champion status with PR-AUC of 0.9181, ROC-AUC of 0.9361, and F1 of 0.836, significantly outperforming Logistic Regression (PR-AUC 0.9154, F1 0.835, $p < 0.001$).
+* **Limitation:** Inability to capture sudden ATC ground stops or microbursts emerging between forecast time and departure.
+* **Counterfactual Change:** Replacing continuous `DEP_DELAY` with binary delay drops PR-AUC to ~0.77, destroying non-linear delay absorption across route distances.
 
 ---
 
 ### Team Member 2: Bantu Shanmukha Naidu (Roll No: 25110071)
-* **Contribution:** Formulated the Post-Departure Arrival Delay model (Stage 2 En-Route) and built the full-stack web platform, REST APIs, and interactive tradeoff simulators. Engineered aircraft rotational chains by tracking `TAIL_NUM` sequences to generate daily leg counts (`tail_leg_of_day`), incoming delay (`prev_arr_delay`), and scheduled turnaround buffer (`sched_turn_min`).
-* **Key Choices:** Integrated continuous departure delay (`DEP_DELAY`) while omitting en-route tracking to eliminate leakage. Selected `HistGradientBoostingClassifier` to model non-linear delay absorption across stage lengths. Tuned validation decision threshold to 0.6588 to achieve high precision (87.0%) on the minority delayed class.
-* **Evaluation:** Evaluated on 81,682 held-out flights (Jun–Jul 2024). Achieved PR-AUC of 0.9181, ROC-AUC of 0.9361, Accuracy of 90.1%, and F1 of 0.836, significantly beating the industry rule baseline (+0.0068 gain, $p < 0.001$).
-* **Limitation:** Lacks real-time high-altitude jet stream winds and destination gate holds, causing false alarms when flights make up time.
-* **Counterfactual Change:** Replacing continuous `DEP_DELAY` with a binary delayed flag degrades PR-AUC to ~0.77, destroying the non-linear relationship between delay magnitude and flight distance.
+* **Assigned Models:** **Departure-Delay Rule Baseline** ($\ge 18\text{m}$) & **Random Forest** (Tree Ensemble Benchmark)
+* **Core Project Responsibilities:** Web Platform Architecture, UI Decision Simulators & Aircraft Rotational Chain Feature Engineering
+* **Contribution:** Architected the full-stack Flask web platform, REST APIs, and interactive tradeoff simulators. Engineered multi-leg aircraft rotational chains (`tail_leg_of_day`, `prev_arr_delay`, `sched_turn_min`) via `TAIL_NUM` tracking. Evaluated two arrival models: the domain **Departure-Delay Rule Baseline** ($\ge 18\text{m}$) and the **Random Forest** ensemble.
+* **Key Choices:** Structured the heuristic rule ($\ge 18\text{m}$ pushback delay) as an operational baseline reflecting airline industry dispatch practices. Built a 100-tree Random Forest benchmark with bootstrap sub-sampling to measure non-linear variance reduction over linear models. Tuned Random Forest decision threshold to 0.694 on validation data to maximize precision (87.4%).
+* **Evaluation:** Tested on 81,682 unseen flights (Jun–Jul 2024). Random Forest achieved PR-AUC of 0.9148, ROC-AUC of 0.9327, and F1 of 0.834, matching the domain rule baseline (PR-AUC 0.9110, F1 0.834, Accuracy 89.9%) while providing calibrated continuous risk probabilities.
+* **Limitation:** Lacks real-time en-route tailwind telemetry, causing false alarms when pilots make up flight time.
+* **Counterfactual Change:** Moving the decision threshold from 0.694 to 0.50 increases recall to 89% but surges false positive gate reassignments by 32%.
 
 
