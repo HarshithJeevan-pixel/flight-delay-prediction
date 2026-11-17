@@ -266,19 +266,19 @@ Generative AI tools were used during development to assist with code refactoring
 In accordance with course evaluation criteria (*"Each of you must explain your contribution, key choices, evaluation, and a limitation, and reason about a small change. Prepare for this separately."*), each team member's independent technical defense is summarized below (~150 words each):
 
 ### Team Member 1: Tommandru Harshith Jeevan (Roll No: 25110325)
-* **Contribution:** Formulated the Pre-Departure Delay model (Stage 1 @ T-2h) and built the end-to-end Flask MLOps platform, REST APIs, and interactive tradeoff simulators. Merged BTS flight records with NOAA ASOS/METAR weather data via backward-as-of joins strictly prior to T-2h, and engineered rolling hub congestion rates (1h, 3h, 6h).
-* **Key Choices:** Enforced zero target leakage by excluding post-pushback telemetry (`DEP_TIME`, `TAXI_OUT`). Used cyclic trigonometric hour encodings and selected `HistGradientBoostingClassifier` for non-linear feature interactions and missing-value handling. Tuned decision threshold to 0.526 on validation data to maximize operational F1.
-* **Evaluation:** Evaluated on 82,039 unseen flights (Jun–Jul 2024). Outperformed historical baseline with PR-AUC of 0.566 vs 0.488 (+0.078 gain, $p < 0.001$), ROC-AUC of 0.731, and F1 of 0.563.
-* **Limitation:** Blind to short-notice ATC ground stops declared between T-2h and departure during sudden convective storms.
-* **Counterfactual Change:** Moving the window to T-30m raises PR-AUC to ~0.67, but destroys actionable dispatch lead time.
+* **Contribution:** Led data collection and preprocessing from BTS TranStats (952k flights) and NOAA ASOS/METAR weather stations across 10 hubs using backward-as-of joins. Formulated and trained the Pre-Departure Delay model (Stage 1 @ T-2h) with dynamic hub congestion rates (1h, 3h, 6h) and executed 3-tier feature ablation experiments.
+* **Key Choices:** Enforced zero target leakage by removing post-pushback variables (`DEP_TIME`, `TAXI_OUT`). Encoded departure hour with cyclic trigonometric coordinates and selected `HistGradientBoostingClassifier` for non-linear weather-traffic interactions and missing-value resilience. Tuned validation decision threshold to 0.526 to maximize operational F1.
+* **Evaluation:** Tested on 82,039 held-out flights (Jun–Jul 2024). Outperformed historical baseline with PR-AUC of 0.566 vs 0.488 (+0.078 gain, $p < 0.001$), ROC-AUC of 0.731, and F1 of 0.563.
+* **Limitation:** Blind to rapid convective storms and short-notice ATC ground stops declared between T-2h and pushback.
+* **Counterfactual Change:** Narrowing prediction horizon to T-30m raises PR-AUC to ~0.67, but removes actionable lead time for gate holding and taxiway metering.
 
 ---
 
 ### Team Member 2: Bantu Shanmukha Naidu (Roll No: 25110071)
-* **Contribution:** Formulated the Post-Departure Arrival Delay model (Stage 2 En-Route) and built the Scikit-Learn pipelines and Colab reproduction notebook. Engineered aircraft rotational chains by tracking `TAIL_NUM` sequences to extract cumulative leg count (`tail_leg_of_day`), incoming delay (`prev_arr_delay`), and turnaround buffer (`sched_turn_min`).
-* **Key Choices:** Integrated continuous departure delay (`DEP_DELAY`) while omitting post-pushback flight telemetry to eliminate leakage. Selected `HistGradientBoostingClassifier` to capture non-linear recovery effects across flight distances. Tuned validation decision threshold to 0.6588 to achieve high precision (87.0%) on the minority delayed class.
-* **Evaluation:** Tested on 81,682 unseen flights (Jun–Jul 2024). Achieved PR-AUC of 0.9181, ROC-AUC of 0.9361, Accuracy of 90.1%, and F1 of 0.836, significantly outperforming the industry rule baseline (+0.0068 PR-AUC gain, $p < 0.001$).
-* **Limitation:** Lacks real-time en-route telemetry (jet stream wind vectors, ATC holding stacks), causing false alarms when pilots make up time in flight.
-* **Counterfactual Change:** Replacing continuous `DEP_DELAY` with a binary delayed flag drops PR-AUC to ~0.77, destroying delay magnitude and flight distance interaction.
+* **Contribution:** Formulated the Post-Departure Arrival Delay model (Stage 2 En-Route) and built the full-stack web platform, REST APIs, and interactive tradeoff simulators. Engineered aircraft rotational chains by tracking `TAIL_NUM` sequences to generate daily leg counts (`tail_leg_of_day`), incoming delay (`prev_arr_delay`), and scheduled turnaround buffer (`sched_turn_min`).
+* **Key Choices:** Integrated continuous departure delay (`DEP_DELAY`) while omitting en-route tracking to eliminate leakage. Selected `HistGradientBoostingClassifier` to model non-linear delay absorption across stage lengths. Tuned validation decision threshold to 0.6588 to achieve high precision (87.0%) on the minority delayed class.
+* **Evaluation:** Evaluated on 81,682 held-out flights (Jun–Jul 2024). Achieved PR-AUC of 0.9181, ROC-AUC of 0.9361, Accuracy of 90.1%, and F1 of 0.836, significantly beating the industry rule baseline (+0.0068 gain, $p < 0.001$).
+* **Limitation:** Lacks real-time high-altitude jet stream winds and destination gate holds, causing false alarms when flights make up time.
+* **Counterfactual Change:** Replacing continuous `DEP_DELAY` with a binary delayed flag degrades PR-AUC to ~0.77, destroying the non-linear relationship between delay magnitude and flight distance.
 
 
