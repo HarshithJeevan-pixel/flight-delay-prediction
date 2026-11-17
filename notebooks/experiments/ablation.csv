@@ -1,0 +1,4 @@
+feature set,features,val F1,test precision,test recall,test F1,test PR-AUC,test ROC-AUC
+"A. base (weather, schedule, 30-day rates)",29,0.544,0.406,0.828,0.545,0.523,0.709
+B. + extra trailing rates,34,0.549,0.428,0.789,0.555,0.538,0.719
+C. + airport status (full),40,0.557,0.447,0.759,0.563,0.566,0.731

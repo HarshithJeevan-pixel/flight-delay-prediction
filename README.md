@@ -38,59 +38,53 @@ Each row represents **exactly one scheduled commercial passenger flight leg** op
 ## 2. Repository Structure & Notebook Reproduction Mapping
 
 ```
-SHANMUKHA/
+flight-delay-prediction/
 │
-├── flight-delay-website/                 # Production Flask Web Application
-│   ├── app.py                           # Flask web server, route controllers & REST API endpoints
-│   ├── config.py                        # Central path configs, thresholds, airports & airlines metadata
-│   ├── requirements.txt                 # Exact Python dependencies
-│   ├── README.md                        # This documentation file
-│   │
-│   ├── model/
-│   │   ├── arrival_models.joblib        # Scikit-Learn pipelines & validation thresholds (Arrival)
-│   │   ├── arrival_results_for_website.json # Held-out test metrics, curves & threshold arrays (Arrival)
-│   │   └── departure_results_for_website.json # Held-out test metrics & curves (Departure)
-│   │
-│   ├── data/
-│   │   ├── bts_2023_arrival_clean.parquet # Cleaned 2023 flight operations (474k records)
-│   │   └── flights_weather_2024_10airports.parquet # Cleaned 2024 flight operations (478k records)
-│   │
-│   ├── services/
-│   │   ├── flight_service.py            # High-speed indexed search & dataset analytics
-│   │   ├── feature_service.py           # Prepares exact feature vectors with strict leakage prevention
-│   │   └── prediction_service.py        # Model loading, inference & threshold classification
-│   │
-│   ├── templates/
-│   │   ├── base.html                    # Master layout with navigation, status pills & footer
-│   │   ├── index.html                   # Landing portal & executive project reasoning summary
-│   │   ├── performance.html             # Model benchmarks, PR curves, threshold & ablation simulators
-│   │   ├── prediction.html              # Interactive flight search & counterfactual delay inference
-│   │   ├── about.html                   # Full scientific reasoning report & methodology
-│   │   └── dashboard.html               # Operations overview & session history
-│   │
-│   ├── static/
-│   │   ├── css/style.css                # Warm ivory / editorial minimalist design system
-│   │   └── js/script.js                 # Interactive simulators, async search & Chart.js drivers
-│   │
-│   └── tests/
-│       └── test_app.py                  # Automated test suite (10/10 passing)
+├── app.py                                   # Flask web server, route controllers & REST API endpoints
+├── config.py                                # Central path configs, thresholds, airports & airlines metadata
+├── requirements.txt                         # Exact Python dependencies
+├── README.md                                # Comprehensive documentation & rubric verification
+├── train_arrival_2024.py                    # Standalone reproduction script for Arrival delay modeling
 │
-├── train_arrival_2024.py                # Standalone script: builds 2024 rotation, trains & validates Arrival models
+├── notebooks/                               # Reproduction Jupyter & Colab Notebooks
+│   ├── arrival_delay_colab.ipynb            # Interactive Google Colab notebook for Arrival delay modeling
+│   ├── train_2023_to_apr2024_test_may_jul2024.ipynb # Complete Departure delay reproduction notebook
+│   └── experiments/                         # Full experimental results & ablation CSV exports
+│       ├── ablation.csv                     # Feature ablation experiment results
+│       ├── scores_test.csv                  # Test set model comparison scores
+│       ├── scores_validation.csv            # Validation set threshold tuning scores
+│       └── scores_by_test_month.csv         # Monthly temporal stability (June vs July 2024)
 │
-├── notebooks/
-│   └── arrival_delay_colab.ipynb        # Interactive Google Colab notebook for Arrival delay modeling
+├── model/
+│   ├── arrival_models.joblib                # Scikit-Learn pipelines & validation thresholds (Arrival)
+│   ├── arrival_results_for_website.json     # Held-out test metrics, curves & threshold arrays (Arrival)
+│   └── departure_results_for_website.json   # Held-out test metrics & curves (Departure)
 │
-├── DEPART_DELAY/
-│   └── drive-download-20261114T105133Z-1-001/
-│       ├── train_2023_to_apr2024_test_may_jul2024.ipynb # Complete Departure delay reproduction notebook
-│       ├── ablation.csv                 # Feature ablation experiment results
-│       ├── scores_test.csv              # Test set model comparison scores
-│       ├── scores_validation.csv        # Validation set threshold tuning scores
-│       ├── scores_by_test_month.csv     # Monthly temporal stability (June vs July 2024)
-│       └── results_for_website_2023_2024.json # Full benchmark results export
+├── data/
+│   ├── bts_2023_arrival_clean.parquet       # Cleaned 2023 flight operations (474k records)
+│   └── flights_weather_2024_10airports.parquet # Cleaned 2024 flight operations (478k records)
 │
-└── raw_data/
-    └── bts_2024_jan_jul.parquet         # Raw BTS TranStats operational export for 2024
+├── services/
+│   ├── flight_service.py                    # High-speed indexed search & dataset analytics
+│   ├── feature_service.py                   # Prepares exact feature vectors with strict leakage prevention
+│   └── prediction_service.py                # Model loading, inference & threshold classification
+│
+├── templates/                               # Jinja2 HTML Templates
+│   ├── base.html                            # Master layout with navigation, status pills & footer
+│   ├── index.html                           # Landing portal & executive project reasoning summary
+│   ├── performance.html                     # Model benchmarks, PR curves, threshold & ablation simulators
+│   ├── prediction.html                      # Interactive flight search & counterfactual delay inference
+│   ├── about.html                           # Full scientific reasoning report & methodology
+│   └── dashboard.html                       # Operations overview & session history
+│
+├── static/
+│   ├── css/style.css                        # Warm ivory / editorial minimalist design system
+│   └── js/script.js                         # Interactive simulators, async search & Chart.js drivers
+│
+├── tests/
+│   └── test_app.py                          # Automated unit testing suite (10/10 passing)
+│
+└── docs/                                    # GitHub Pages production deployment root
 ```
 
 ---
